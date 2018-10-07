@@ -1,18 +1,15 @@
 package com.sasya.models;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "register")
-public class Register {
+public class UserRegister {
 
 
     private Integer id;
-    private Integer phone;
+    private String phone;
     private String activationCode;
     private String createdBy;
     private Date createdTime;
@@ -31,11 +28,11 @@ public class Register {
 
 
     @Column(name = "phone", unique = true, nullable = false)
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -57,7 +54,7 @@ public class Register {
         this.createdBy = createdBy;
     }
 
-    @Column(name = "created_time")
+    @Column(name = "created_date")
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -75,7 +72,7 @@ public class Register {
         this.updatedBy = updatedBy;
     }
 
-    @Column(name = "updated_time")
+    @Column(name = "updated_date")
     public Date getUpdatedTime() {
         return updatedTime;
     }
