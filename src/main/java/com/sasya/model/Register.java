@@ -1,0 +1,67 @@
+package com.sasya.model;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "register")
+public class Register {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "phone", unique = true, nullable = false)
+    private BigDecimal phone;
+
+    @Column(name = "activation_code")
+    private String activationCode;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date")
+    private String createdDate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public BigDecimal getPhone() {
+        return phone;
+    }
+
+    public void setPhone(BigDecimal phone) {
+        this.phone = phone;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+}

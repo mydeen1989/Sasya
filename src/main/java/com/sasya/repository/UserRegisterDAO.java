@@ -1,10 +1,14 @@
 package com.sasya.repository;
 
-import com.sasya.models.UserRegister;
-import org.springframework.data.repository.CrudRepository;
+import com.sasya.model.Register;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 @Repository
-public interface UserRegisterDAO extends CrudRepository<UserRegister, Integer> {
+@Transactional
+public interface UserRegisterDAO {
+
+    public void saveUserRegistration(Register register);
 
 }

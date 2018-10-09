@@ -1,4 +1,4 @@
-package com.sasya.models;
+package com.sasya.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
