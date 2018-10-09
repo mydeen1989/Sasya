@@ -11,7 +11,7 @@ public class UserDetails {
     private Integer id;
     private Integer registerId;
     private Integer phone;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private String familyMembersCount;
@@ -54,11 +54,11 @@ public class UserDetails {
     @Column(name = "user_name", unique = true, nullable = false)
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     @Column(name = "password")
