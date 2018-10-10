@@ -10,7 +10,7 @@ public class Register {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private BigDecimal id;
 
     @Column(name = "phone", unique = true, nullable = false)
     private BigDecimal phone;
@@ -24,11 +24,12 @@ public class Register {
     @Column(name = "created_date")
     private String createdDate;
 
-    public Integer getId() {
+
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 
