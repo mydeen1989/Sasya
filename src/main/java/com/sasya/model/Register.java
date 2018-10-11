@@ -3,6 +3,9 @@ package com.sasya.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * Register
+ */
 @Entity
 @Table(name = "register")
 public class Register {

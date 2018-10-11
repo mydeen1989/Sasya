@@ -5,6 +5,9 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * User
+ */
 @Entity
 @Table(name = "users")
 public class User {
