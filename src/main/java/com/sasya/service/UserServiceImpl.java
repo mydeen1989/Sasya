@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
-import static com.sasya.constant.SasyaConstants.ACTIVE;
-import static com.sasya.constant.SasyaConstants.SYSTEM_USER;
 
+/**
+ * UserServiceImpl
+ */
 @Service
 public class UserServiceImpl {
 
@@ -25,57 +27,83 @@ public class UserServiceImpl {
     @Inject
     private UserDAO userDao;
 
-    public void registerUser(String mobile) {
+    /**
+     * @param mobile
+     * @return
+     */
+    public SasyaResponse registerUser(String mobile) {
         try {
-            Register register = new Register();
-            register.setPhone(new BigDecimal(mobile));
-            register.setActivationCode("0000");
-            register.setCreatedBy("System");
-            register.setCreatedDate(SasyaConstants.formatter.format(new Date()));
-            userDao.saveUserRegistration(register);
+                if(!Objects.nonNull(userDao.findByMobile(new BigDecimal(mobile)))) {
+                    Register register = new Register();
+                    register.setPhone(new BigDecimal(mobile));
+                    register.setActivationCode("0000");
+                    register.setCreatedBy(SasyaConstants.SYSTEM_USER);
+                    register.setCreatedDate(SasyaConstants.formatter.format(new Date()));
+                    userDao.saveUserRegistration(register);
+                    return new SasyaResponse(SasyaConstants.SUCCESS, SasyaConstants.OK);
+                }
+                else{
+                    return new SasyaResponse(SasyaConstants.FAILURE, SasyaConstants.MOBILE_REGISTERED);
+                }
+
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
+    /**
+     * @param user
+     * @return
+     */
     public SasyaResponse addUser(UserDto user) {
         try {
-            Register register = userDao.loadRegister(new BigDecimal(user.getRegister().getMobile()), user.getRegister().getActivationCode());
+            Register register = userDao.loadRegister(new BigDecimal(user.getRegister().getMobile()), user.getActivationCode());
             if (register != null) {
-                userDao.addUserDetails(convertUserDtoToUserModel(user, register));
-                SasyaResponse response = new SasyaResponse("Success", "User added Successfully");
-                return response;
+                User userDetails = userDao.loadUser(register.getPhone());
+                if(!Objects.nonNull(userDetails)) {
+                    userDao.addUserDetails(convertUserDtoToUserModel(user, register));
+                    return new SasyaResponse(SasyaConstants.SUCCESS, SasyaConstants.USER_ADDED_SUCCESSFULLY);
+                }
+                else{
+                    return new SasyaResponse(SasyaConstants.FAILURE, SasyaConstants.USER_REGISTERED);
+                }
             }
-            SasyaResponse response = new SasyaResponse("Failure", "User Registration not found");
-            return response;
+            throw new SasyaException(SasyaConstants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
+    /**
+     * @param loginDto
+     * @return
+     */
     public SasyaResponse login(LoginDto loginDto) {
         try {
             User user = userDao.login(loginDto.getUserName(),loginDto.getPassword());
             if(user!=null) {
                 UserDto userDto = convertUserModelToUserDto(user);
-                SasyaResponse response = new SasyaResponse("Success", "User details found",userDto);
+                SasyaResponse response = new SasyaResponse(SasyaConstants.SUCCESS, SasyaConstants.USER_FOUND,userDto);
                 return response;
             }
-            SasyaResponse response = new SasyaResponse("Failure", "Login Failed");
-            return response;
+            return new SasyaResponse(SasyaConstants.FAILURE, SasyaConstants.LOGIN_FAILED);
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
-
+    /**
+     * @param userDto
+     * @param register
+     * @return
+     */
     private User convertUserDtoToUserModel(UserDto userDto, Register register) {
         User user = new User();
-        user.setActive(ACTIVE);
-        user.setCreatedBy(SYSTEM_USER);
+        user.setActive(SasyaConstants.ACTIVE);
+        user.setCreatedBy(SasyaConstants.SYSTEM_USER);
         user.setCreatedDate(SasyaConstants.formatter.format(new Date()));
         user.setDeviceId(userDto.getDeviceId());
         user.setDeviceType(userDto.getDeviceType());
@@ -89,6 +117,10 @@ public class UserServiceImpl {
     }
 
 
+    /**
+     * @param user
+     * @return
+     */
     private UserDto convertUserModelToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setDeviceId(user.getDeviceId());

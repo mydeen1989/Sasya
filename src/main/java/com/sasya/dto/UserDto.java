@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.math.BigDecimal;
 
-@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","register"})
+/**
+ * UserDto
+ */
+@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","activation_code","register"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements IResponseDto{
 
@@ -27,6 +30,9 @@ public class UserDto implements IResponseDto{
 
     @JsonProperty("device_type")
     private String deviceType;
+
+    @JsonProperty("activation_code")
+    private String activationCode;
 
     @JsonProperty("register")
     private RegisterDto register;
@@ -85,5 +91,13 @@ public class UserDto implements IResponseDto{
 
     public void setRegister(RegisterDto register) {
         this.register = register;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

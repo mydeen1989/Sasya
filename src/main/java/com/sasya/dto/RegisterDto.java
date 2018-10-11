@@ -6,16 +6,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.validation.constraints.NotNull;
 
-@JsonPropertyOrder({"mobile","activation_code"})
+/**
+ * RegisterDto
+ */
+@JsonPropertyOrder({"mobile"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterDto implements IResponseDto {
 
     @JsonProperty("mobile")
     @NotNull
     private String mobile ;
-
-    @JsonProperty("activation_code")
-    private String activationCode ;
 
     public String getMobile() {
         return mobile;
@@ -25,11 +25,4 @@ public class RegisterDto implements IResponseDto {
         this.mobile = mobile;
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
 }
