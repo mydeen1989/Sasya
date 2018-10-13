@@ -58,4 +58,21 @@ public class SasyaResponse {
     public void setResponseDto(IResponseDto responseDto) {
         this.responseDto = responseDto;
     }
+
+    public static SasyaResponse build(String status,String message){
+        SasyaResponse response = new SasyaResponse();
+        response.setStatus(status);
+        response.setMessage(message);
+        return response;
+    }
+
+    public static SasyaResponse build(String status,String message,IResponseDto responseDto){
+        SasyaResponse response = new SasyaResponse();
+        if(responseDto!=null){
+            response.setResponseDto(responseDto);
+        }
+        response.setStatus(status);
+        response.setMessage(message);
+        return response;
+    }
 }

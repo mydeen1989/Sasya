@@ -24,8 +24,15 @@ public class Register {
     @Column(name = "created_by")
     private String createdBy;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumns(
+            @JoinColumn(name = "ID",referencedColumnName = "register_id")
+    )
+    private User user;
+
     @Column(name = "created_date")
     private String createdDate;
+
 
 
     public BigDecimal getId() {
@@ -67,5 +74,13 @@ public class Register {
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
