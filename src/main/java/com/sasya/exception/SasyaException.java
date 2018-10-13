@@ -27,4 +27,8 @@ public class SasyaException extends RuntimeException {
         return httpStatus;
     }
 
+    public static SasyaException build(String message, HttpStatus httpStatus){
+        return new SasyaException(message,httpStatus);
+    }
+
 }

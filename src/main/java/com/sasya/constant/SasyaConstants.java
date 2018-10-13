@@ -14,11 +14,13 @@ public class SasyaConstants {
     public static final String FAILURE = "Failure";
     public static final String OK = "Ok";
     public static final String USER_ADDED_SUCCESSFULLY = "User added Successfully";
-    public static final String USER_REGISTERED = "User already registered";
-    public static final String MOBILE_REGISTERED = "Mobile number already registered";
+    public static final String USER_ALREADY_REGISTERED = "User already registered";
+    public static final String MOBILE_REGISTER_FAILURE = "Mobile number already registered";
     public static final String USER_NOT_FOUND = "User Not found";
     public static final String USER_FOUND = "User details found";
     public static final String LOGIN_FAILED = "Login Failed";
+    public static final String REGISTER_SUCCESS = "Mobile number Registered";
+    public static final String MOBILE_NOT_REGISTERED = "Mobile number not registered";
 
 
 
