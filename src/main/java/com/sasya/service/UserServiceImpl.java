@@ -64,7 +64,7 @@ public class UserServiceImpl {
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).
                         body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.MOBILE_NOT_REGISTERED));
             }
-            if(userDao.findByMobile(new BigDecimal(user.getRegister().getMobile()))!=null) {
+            if(userDao.loadUser(new BigDecimal(user.getRegister().getMobile()))!=null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_ALREADY_REGISTERED));
             }
             userDao.addUserDetails(convertUserDtoToUserModel(user, register));
@@ -81,7 +81,7 @@ public class UserServiceImpl {
      */
     public ResponseEntity login(LoginDto loginDto) {
         try {
-            User user = userDao.login(loginDto.getUserName(),loginDto.getPassword());
+            User user = userDao.login(new BigDecimal(loginDto.getMobile()),loginDto.getPassword());
             if(user!=null) {
                 UserDto userDto = convertUserModelToUserDto(user);
                 return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.USER_FOUND,userDto));

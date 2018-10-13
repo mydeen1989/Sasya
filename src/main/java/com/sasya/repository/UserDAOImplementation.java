@@ -53,14 +53,14 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     /**
-     * @param userName
+     * @param mobile
      * @param password
      * @return
      */
     @Override
-    public User login(String userName, String password) {
-       List<User> lstUser = entityManager.createQuery("select u from User u where userName=?1 and password=?2 and active='1'")
-               .setParameter(1,userName)
+    public User login(BigDecimal mobile, String password) {
+       List<User> lstUser = entityManager.createQuery("select u from User u where phone=?1 and password=?2 and active='1'")
+               .setParameter(1,mobile)
                .setParameter(2,password)
                .getResultList();
        if(lstUser.isEmpty()){

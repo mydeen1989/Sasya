@@ -36,7 +36,7 @@ public interface UserDAO {
      * @param password
      * @return
      */
-    public User login(String userName, String password);
+    public User login(BigDecimal userName, String password);
 
     /**
      * @param mobile

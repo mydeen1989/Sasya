@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * UserController
  */
-@JsonPropertyOrder({"username","password","otp"})
+@JsonPropertyOrder({"mobile","password","otp"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginDto implements IResponseDto{
 
-    @JsonProperty("username")
-    private String userName;
+    @JsonProperty("mobile")
+    private String mobile;
 
     @JsonProperty("password")
     private String password;
@@ -20,12 +20,12 @@ public class LoginDto implements IResponseDto{
     @JsonProperty("otp")
     private String otp;
 
-    public String getUserName() {
-        return userName;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getPassword() {
