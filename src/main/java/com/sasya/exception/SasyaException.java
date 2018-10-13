@@ -1,7 +1,11 @@
 package com.sasya.exception;
 
+import com.sasya.response.SasyaResponse;
 import org.springframework.http.HttpStatus;
 
+/**
+ * SasyaException
+ */
 public class SasyaException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -23,5 +27,8 @@ public class SasyaException extends RuntimeException {
         return httpStatus;
     }
 
+    public static SasyaException build(String message, HttpStatus httpStatus){
+        return new SasyaException(message,httpStatus);
+    }
 
 }
