@@ -1,7 +1,10 @@
 package com.sasya.repository;
 
+import com.sasya.constant.SasyaConstants;
+import com.sasya.exception.SasyaException;
 import com.sasya.model.Register;
 import com.sasya.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -84,12 +87,33 @@ public class UserDAOImplementation implements UserDAO {
         return lstRegister.get(0);
     }
 
+    @Override
+    public User findUserById(BigDecimal id) {
+        try {
+            return entityManager.find(User.class, id);
+        }
+        catch (Exception exp){
+            throw new SasyaException(SasyaConstants.USER_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+    /**
+     * @param user
+     */
+    @Override
+    public void updateUserDetails(User user) {
+        entityManager.merge(user);
+    }
+
+
+
     /**
      * @param mobile
      * @return
      */
     public User loadUser(BigDecimal mobile){
-
         List<User> lstUser = entityManager.createQuery("select u from User u where phone=?1")
                 .setParameter(1,mobile)
                 .getResultList();

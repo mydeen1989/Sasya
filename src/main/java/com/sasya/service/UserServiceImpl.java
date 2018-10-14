@@ -1,9 +1,11 @@
 package com.sasya.service;
 
 import com.sasya.constant.SasyaConstants;
+import com.sasya.dto.AddressDto;
 import com.sasya.dto.LoginDto;
 import com.sasya.dto.UserDto;
 import com.sasya.exception.SasyaException;
+import com.sasya.model.Address;
 import com.sasya.model.Register;
 import com.sasya.model.User;
 import com.sasya.repository.UserDAO;
@@ -13,10 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
+
+import static com.sasya.util.SasyaUtils.convertAddressDtoToEntity;
+import static com.sasya.util.SasyaUtils.convertUserDtoToUserModel;
+import static com.sasya.util.SasyaUtils.convertUserModelToUserDto;
 
 
 /**
@@ -59,12 +64,12 @@ public class UserServiceImpl {
      */
     public ResponseEntity addUser(UserDto user) {
         try {
-            Register register = userDao.loadRegister(new BigDecimal(user.getRegister().getMobile()), user.getActivationCode());
+            Register register = userDao.loadRegister(new BigDecimal(user.getRegister().getMobile()), user.getOtp());
             if (register == null) {
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).
                         body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.MOBILE_NOT_REGISTERED));
             }
-            if(userDao.findByMobile(new BigDecimal(user.getRegister().getMobile()))!=null) {
+            if(register.getUser()!=null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_ALREADY_REGISTERED));
             }
             userDao.addUserDetails(convertUserDtoToUserModel(user, register));
@@ -92,41 +97,25 @@ public class UserServiceImpl {
         }
     }
 
-
     /**
-     * @param userDto
-     * @param register
+     * @param addressDto
      * @return
      */
-    private User convertUserDtoToUserModel(UserDto userDto, Register register) {
-        User user = new User();
-        user.setActive(SasyaConstants.ACTIVE);
-        user.setCreatedBy(SasyaConstants.SYSTEM_USER);
-        user.setCreatedDate(SasyaConstants.formatter.format(new Date()));
-        user.setDeviceId(userDto.getDeviceId());
-        user.setDeviceType(userDto.getDeviceType());
-        user.setEmail(userDto.getEmail());
-        user.setFamilyMembersCount(userDto.getFamilyMembersCount());
-        user.setPassword(userDto.getPassword());
-        user.setUserName(userDto.getUserName());
-        user.setRegisterId(register.getId());
-        user.setPhone(register.getPhone());
-        return user;
+    public ResponseEntity addAddress(AddressDto addressDto) {
+        try {
+            User user = userDao.findUserById(new BigDecimal(addressDto.getUserId()));
+            Address address = convertAddressDtoToEntity(addressDto,user);
+            user.getAddress().add(address);
+            userDao.updateUserDetails(user);
+            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.USER_ADDRESS_ADDED));
+        } catch (SasyaException sasyaExp){
+            throw sasyaExp;
+        }
+        catch (Exception exp) {
+            throw new SasyaException(exp.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
-    /**
-     * @param user
-     * @return
-     */
-    private UserDto convertUserModelToUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setDeviceId(user.getDeviceId());
-        userDto.setDeviceType(user.getDeviceType());
-        userDto.setEmail(user.getEmail());
-        userDto.setFamilyMembersCount(user.getFamilyMembersCount());
-        userDto.setUserName(user.getUserName());
-        return userDto;
-    }
 
 }

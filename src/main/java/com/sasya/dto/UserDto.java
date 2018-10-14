@@ -3,37 +3,56 @@ package com.sasya.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 /**
  * UserDto
  */
-@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","activation_code","register"})
+@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","otp","register"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements IResponseDto{
 
+    @NotNull
+    @Size(min=3,max = 100)
+    @ApiModelProperty(required = true)
     @JsonProperty("username")
     private String userName;
 
+    @Size(max = 10)
+    @ApiModelProperty(required = true)
     @JsonProperty("password")
     private String password;
 
+    @NotNull
+    @Email
+    @ApiModelProperty(required = true)
     @JsonProperty("email")
     private String email;
 
     @JsonProperty("family_members_count")
     private BigDecimal familyMembersCount;
 
+    @NotNull
+    @ApiModelProperty(required = true)
     @JsonProperty("device_id")
     private String deviceId;
 
+    @NotNull
+    @ApiModelProperty(required = true)
     @JsonProperty("device_type")
     private String deviceType;
 
-    @JsonProperty("activation_code")
-    private String activationCode;
+    @NotNull
+    @ApiModelProperty(required = true)
+    @JsonProperty("otp")
+    private String otp;
 
+    @NotNull
+    @ApiModelProperty(required = true)
     @JsonProperty("register")
     private RegisterDto register;
 
@@ -93,11 +112,11 @@ public class UserDto implements IResponseDto{
         this.register = register;
     }
 
-    public String getActivationCode() {
-        return activationCode;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

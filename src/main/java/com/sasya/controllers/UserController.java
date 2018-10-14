@@ -1,5 +1,6 @@
 package com.sasya.controllers;
 
+import com.sasya.dto.AddressDto;
 import com.sasya.dto.LoginDto;
 import com.sasya.dto.RegisterDto;
 import com.sasya.dto.UserDto;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiResponses;
 
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -36,13 +38,13 @@ public class UserController {
      */
     @ApiOperation(value="Register",response= SasyaResponse.class)
     @ApiResponses(value={
-            @ApiResponse(code=200,message="Ok",response=SasyaResponse.class),
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody RegisterDto register){
+    public ResponseEntity register(@Valid @RequestBody RegisterDto register){
         return userService.registerUser(register.getMobile());
     }
 
@@ -54,10 +56,10 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code=201,message="User added Successfully",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public ResponseEntity addUser(@RequestBody UserDto user){
+    public ResponseEntity addUser(@Valid @RequestBody UserDto user){
         return userService.addUser(user);
     }
 
@@ -67,13 +69,27 @@ public class UserController {
      */
     @ApiOperation(value="login",response= SasyaResponse.class)
     @ApiResponses(value={
-            @ApiResponse(code=200,message="Ok",response=SasyaResponse.class),
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity loginUser(@RequestBody LoginDto login){
+    public ResponseEntity loginUser(@Valid @RequestBody LoginDto login){
         return userService.login(login);
     }
 
+
+    @ApiOperation(value="addAddress",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code=400,message="Invalid Request")
+    })
+    @RequestMapping(value = "/addAddress", method = RequestMethod.POST)
+    public ResponseEntity addAddress(@Valid @RequestBody AddressDto addressDto){
+        return userService.addAddress(addressDto);
+    }
+
+
 }
+

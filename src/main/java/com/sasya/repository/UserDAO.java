@@ -24,6 +24,13 @@ public interface UserDAO {
      */
     public void addUserDetails(User user);
 
+
+    /**
+     * @param user
+     */
+    public void updateUserDetails(User user);
+
+
     /**
      * @param mobile
      * @param activationCode
@@ -43,6 +50,14 @@ public interface UserDAO {
      * @return
      */
     public Register findByMobile(BigDecimal mobile);
+
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public User findUserById(BigDecimal id);
 
     /**
      * @param mobile

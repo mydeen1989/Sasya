@@ -21,6 +21,7 @@ public class SasyaConstants {
     public static final String LOGIN_FAILED = "Login Failed";
     public static final String REGISTER_SUCCESS = "Mobile number Registered";
     public static final String MOBILE_NOT_REGISTERED = "Mobile number not registered";
+    public static final String USER_ADDRESS_ADDED = "User address added";
 
 
 

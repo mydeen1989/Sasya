@@ -34,4 +34,25 @@ CREATE TABLE `users` (
 
 -- -------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS SASYA.address;
+
+CREATE TABLE `address` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `address` varchar(200) DEFAULT NULL,
+  `city` varchar(20) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  `country` varchar(20) DEFAULT NULL,
+  `pincode` bigint(20) DEFAULT NULL,
+  `landmark` varchar(2000) DEFAULT NULL,
+  `address_type` varchar(10) DEFAULT NULL,
+  `secondary_mobile` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created_date` varchar(45) DEFAULT NULL,
+  `created_by` varchar(45) DEFAULT NULL,
+  `updated_date` varchar(45) DEFAULT NULL,
+  `updated_by` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `address_fk` (`user_id`),
+  CONSTRAINT `address_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
