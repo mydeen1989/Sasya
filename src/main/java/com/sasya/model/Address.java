@@ -53,6 +53,10 @@ public class Address {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Column(name = "active")
+    private String active;
+
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -175,5 +179,13 @@ public class Address {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 }

@@ -51,8 +51,8 @@ CREATE TABLE `address` (
   `created_by` varchar(45) DEFAULT NULL,
   `updated_date` varchar(45) DEFAULT NULL,
   `updated_by` varchar(45) DEFAULT NULL,
+  `active` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `address_fk` (`user_id`),
   CONSTRAINT `address_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-

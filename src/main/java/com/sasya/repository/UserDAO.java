@@ -1,5 +1,6 @@
 package com.sasya.repository;
 
+import com.sasya.model.Address;
 import com.sasya.model.Register;
 import com.sasya.model.User;
 import org.springframework.stereotype.Repository;
@@ -43,7 +44,7 @@ public interface UserDAO {
      * @param password
      * @return
      */
-    public User login(String userName, String password);
+    public User login(BigDecimal userName, String password);
 
     /**
      * @param mobile
@@ -64,6 +65,25 @@ public interface UserDAO {
      * @return
      */
     public User loadUser(BigDecimal mobile);
+
+    /**
+     *
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    public boolean deleteAddress(BigDecimal userId,BigDecimal addressId);
+
+
+    /**
+     *
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    public Address findAddressById(BigDecimal userId, BigDecimal addressId);
+
+     public <T> void mergeObject(T object);
 
 
 }

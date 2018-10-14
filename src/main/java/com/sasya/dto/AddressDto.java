@@ -8,15 +8,20 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
-@JsonPropertyOrder({"user_id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
+@JsonPropertyOrder({"id","user_id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
 public class AddressDto {
+
+    @ApiModelProperty(value = "id of address",required = true)
+    @JsonProperty("id")
+    private BigDecimal id;
 
     @NotNull
     @Size(min=1)
     @ApiModelProperty(value = "User Id of an existing user. Usually id is hidden to the user view",required = true)
     @JsonProperty("user_id")
-    private String userId;
+    private BigDecimal userId;
 
     @ApiModelProperty(required = true)
     @Size(min=1,max=500)
@@ -54,12 +59,11 @@ public class AddressDto {
     @JsonProperty("secondary_mobile")
     private String secondary_mobile;
 
-
-    public String getUserId() {
+    public BigDecimal getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(BigDecimal userId) {
         this.userId = userId;
     }
 
@@ -125,5 +129,13 @@ public class AddressDto {
 
     public void setSecondary_mobile(String secondary_mobile) {
         this.secondary_mobile = secondary_mobile;
+    }
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
     }
 }

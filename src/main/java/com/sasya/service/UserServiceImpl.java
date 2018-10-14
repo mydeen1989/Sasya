@@ -69,7 +69,8 @@ public class UserServiceImpl {
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).
                         body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.MOBILE_NOT_REGISTERED));
             }
-            if(register.getUser()!=null) {
+
+            if(register.getUser().getPhone()!=null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_ALREADY_REGISTERED));
             }
             userDao.addUserDetails(convertUserDtoToUserModel(user, register));
@@ -86,7 +87,7 @@ public class UserServiceImpl {
      */
     public ResponseEntity login(LoginDto loginDto) {
         try {
-            User user = userDao.login(loginDto.getUserName(),loginDto.getPassword());
+            User user = userDao.login(new BigDecimal(loginDto.getMobile()),loginDto.getPassword());
             if(user!=null) {
                 UserDto userDto = convertUserModelToUserDto(user);
                 return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.USER_FOUND,userDto));
@@ -103,11 +104,11 @@ public class UserServiceImpl {
      */
     public ResponseEntity addAddress(AddressDto addressDto) {
         try {
-            User user = userDao.findUserById(new BigDecimal(addressDto.getUserId()));
+            User user = userDao.findUserById(addressDto.getUserId());
             Address address = convertAddressDtoToEntity(addressDto,user);
             user.getAddress().add(address);
             userDao.updateUserDetails(user);
-            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.USER_ADDRESS_ADDED));
+            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.ADDRESS_ADD_SUCCESS));
         } catch (SasyaException sasyaExp){
             throw sasyaExp;
         }
@@ -116,6 +117,46 @@ public class UserServiceImpl {
         }
     }
 
+    /**
+     *
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    public ResponseEntity deleteAddress(BigDecimal userId,BigDecimal addressId) {
+        try {
+            if (userDao.deleteAddress(userId, addressId)) {
+                return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.ADDRESS_DELETE_SUCCESS));
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE,SasyaConstants.ADDRESS_NOT_FOUND));
+        } catch (SasyaException sasyaExp){
+            throw sasyaExp;
+        }
+        catch (Exception exp) {
+            throw new SasyaException(exp.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-
+    /**
+     * @param addressDto
+     * @return
+     */
+    public ResponseEntity updateAddress(AddressDto addressDto) {
+        try {
+            Address address = userDao.findAddressById(addressDto.getUserId(),addressDto.getId());
+            if(address==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE,SasyaConstants.ADDRESS_NOT_FOUND));
+            }
+            convertAddressDtoToEntity(addressDto,address);
+            address.setUpdatedBy(addressDto.getUserId().toPlainString());
+            address.setUpdatedDate(SasyaConstants.formatter.format(new Date()));
+            userDao.mergeObject(address);
+            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.ADDRESS_UPDATE_SUCCESS));
+        } catch (SasyaException sasyaExp){
+            throw sasyaExp;
+        }
+        catch (Exception exp) {
+            throw new SasyaException(exp.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

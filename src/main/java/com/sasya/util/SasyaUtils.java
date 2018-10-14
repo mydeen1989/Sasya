@@ -49,21 +49,24 @@ public class SasyaUtils {
     }
 
     public static Address convertAddressDtoToEntity(AddressDto addressDto,User user) {
-        Address address = new Address();
-        address.setAddress(addressDto.getAddress());
-        address.setAddressType(addressDto.getAddressType());
-        address.setCity(addressDto.getCity());
-        address.setCountry(addressDto.getCountry());
-        address.setLandmark(addressDto.getLandmark());
-        address.setPincode(new BigDecimal(addressDto.getPincode()));
-        address.setSecondaryMobile(addressDto.getSecondary_mobile());
-        address.setState(addressDto.getState());
+        Address address = convertAddressDtoToEntity(addressDto,new Address());
         address.setCreatedDate(SasyaConstants.formatter.format(new Date()));
         address.setCreatedBy(user.getUserName());
         address.setUser(user);
         return address;
     }
 
+    public static Address convertAddressDtoToEntity(AddressDto addressDto,Address addressEntity){
+        addressEntity.setAddress(addressDto.getAddress());
+        addressEntity.setAddressType(addressDto.getAddressType());
+        addressEntity.setCity(addressDto.getCity());
+        addressEntity.setCountry(addressDto.getCountry());
+        addressEntity.setLandmark(addressDto.getLandmark());
+        addressEntity.setPincode(new BigDecimal(addressDto.getPincode()));
+        addressEntity.setSecondaryMobile(addressDto.getSecondary_mobile());
+        addressEntity.setState(addressDto.getState());
+        return addressEntity;
+    }
 
 
 }
