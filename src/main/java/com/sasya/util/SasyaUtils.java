@@ -26,7 +26,6 @@ public class SasyaUtils {
         user.setDeviceType(userDto.getDeviceType());
         user.setEmail(userDto.getEmail());
         user.setFamilyMembersCount(userDto.getFamilyMembersCount());
-        user.setPassword(userDto.getPassword());
         user.setUserName(userDto.getUserName());
         user.setRegisterId(register.getId());
         user.setPhone(register.getPhone());
@@ -65,6 +64,7 @@ public class SasyaUtils {
         addressEntity.setPincode(new BigDecimal(addressDto.getPincode()));
         addressEntity.setSecondaryMobile(addressDto.getSecondary_mobile());
         addressEntity.setState(addressDto.getState());
+        addressEntity.setActive("1");
         return addressEntity;
     }
 

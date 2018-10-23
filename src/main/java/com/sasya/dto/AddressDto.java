@@ -17,12 +17,6 @@ public class AddressDto {
     @JsonProperty("id")
     private BigDecimal id;
 
-    @NotNull
-    @Size(min=1)
-    @ApiModelProperty(value = "User Id of an existing user. Usually id is hidden to the user view",required = true)
-    @JsonProperty("user_id")
-    private BigDecimal userId;
-
     @ApiModelProperty(required = true)
     @Size(min=1,max=500)
     @JsonProperty("address")
@@ -58,14 +52,6 @@ public class AddressDto {
 
     @JsonProperty("secondary_mobile")
     private String secondary_mobile;
-
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
-    }
 
     public String getAddress() {
         return address;

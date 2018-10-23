@@ -21,10 +21,6 @@ public class LoginDto implements IResponseDto{
     @JsonProperty("mobile")
     private String mobile;
 
-    @ApiModelProperty(required = false)
-    @JsonProperty("password")
-    private String password;
-
     @ApiModelProperty(required = true)
     @NotNull
     @JsonProperty("otp")
@@ -36,14 +32,6 @@ public class LoginDto implements IResponseDto{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getOtp() {

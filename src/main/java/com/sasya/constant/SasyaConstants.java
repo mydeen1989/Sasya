@@ -23,6 +23,7 @@ public class SasyaConstants {
     public static final String REGISTER_SUCCESS = "Mobile number Registered";
     public static final String MOBILE_NOT_REGISTERED = "Mobile number not registered";
     public static final String INACTIVE = "0";
+    public static final String OTP_FAILURE = "OTP invalid";
 
     /************* Address Messages ********************/
     public static final String ADDRESS_DELETE_SUCCESS = "Address removed successfully";

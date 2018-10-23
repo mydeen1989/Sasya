@@ -22,10 +22,6 @@ public class UserDto implements IResponseDto{
     @JsonProperty("username")
     private String userName;
 
-    @Size(max = 10)
-    @ApiModelProperty(required = true)
-    @JsonProperty("password")
-    private String password;
 
     @NotNull
     @Email
@@ -64,13 +60,6 @@ public class UserDto implements IResponseDto{
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;

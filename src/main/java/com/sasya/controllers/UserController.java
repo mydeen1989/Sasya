@@ -27,7 +27,7 @@ import java.math.BigDecimal;
  * UserController
  */
 @RestController
-@RequestMapping(value="v1/user",consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
+@RequestMapping(value="v1/user")
 @Api(value="user",description="User Profile",produces ="application/json")
 public class UserController {
 
@@ -45,7 +45,7 @@ public class UserController {
             @ApiResponse(code=400,message="Invalid Request")
     })
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
     public ResponseEntity register(@Valid @RequestBody RegisterDto register){
         return userService.registerUser(register.getMobile());
     }
@@ -60,7 +60,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
     public ResponseEntity addUser(@Valid @RequestBody UserDto user){
         return userService.addUser(user);
     }
@@ -75,7 +75,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
     public ResponseEntity loginUser(@Valid @RequestBody LoginDto login){
         return userService.login(login);
     }
@@ -87,10 +87,9 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/{user_id}/addAddress", method = RequestMethod.POST)
-    public ResponseEntity addAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto addressDto){
-        addressDto.setUserId(userId);
-        return userService.addAddress(addressDto);
+    @RequestMapping(value = "/{user_id}/addAddress", method = RequestMethod.POST ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
+    public ResponseEntity addAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto address){
+        return userService.addAddress(address, userId);
     }
 
 
@@ -112,9 +111,9 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/{user_id}/updateAddress", method = RequestMethod.POST)
-     public ResponseEntity updateAddress(@Valid AddressDto addressDto){
-        return userService.updateAddress(addressDto);
+    @RequestMapping(value = "/{user_id}/updateAddress", method = RequestMethod.PUT ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
+     public ResponseEntity updateAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto address){
+        return userService.updateAddress(userId,address);
     }
 
 }
