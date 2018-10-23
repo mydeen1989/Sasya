@@ -1,11 +1,13 @@
 package com.sasya.controllers;
 
+import com.sasya.dto.AddressDto;
 import com.sasya.dto.LoginDto;
 import com.sasya.dto.RegisterDto;
 import com.sasya.dto.UserDto;
 import com.sasya.exception.SasyaException;
 import com.sasya.service.UserServiceImpl;
 import com.sasya.response.SasyaResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.sasya.service.UserServiceImpl;
@@ -16,8 +18,10 @@ import io.swagger.annotations.ApiResponses;
 
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 
 /**
  * UserController
@@ -36,13 +40,13 @@ public class UserController {
      */
     @ApiOperation(value="Register",response= SasyaResponse.class)
     @ApiResponses(value={
-            @ApiResponse(code=200,message="Ok",response=SasyaResponse.class),
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody RegisterDto register){
+    public ResponseEntity register(@Valid @RequestBody RegisterDto register){
         return userService.registerUser(register.getMobile());
     }
 
@@ -54,10 +58,10 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code=201,message="User added Successfully",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public ResponseEntity addUser(@RequestBody UserDto user){
+    public ResponseEntity addUser(@Valid @RequestBody UserDto user){
         return userService.addUser(user);
     }
 
@@ -67,13 +71,51 @@ public class UserController {
      */
     @ApiOperation(value="login",response= SasyaResponse.class)
     @ApiResponses(value={
-            @ApiResponse(code=200,message="Ok",response=SasyaResponse.class),
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=400,message="Invalid Bad Request")
+            @ApiResponse(code=400,message="Invalid Request")
     })
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity loginUser(@RequestBody LoginDto login){
+    public ResponseEntity loginUser(@Valid @RequestBody LoginDto login){
         return userService.login(login);
     }
 
+
+    @ApiOperation(value="addAddress",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code=400,message="Invalid Request")
+    })
+    @RequestMapping(value = "/{user_id}/addAddress", method = RequestMethod.POST)
+    public ResponseEntity addAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto addressDto){
+        addressDto.setUserId(userId);
+        return userService.addAddress(addressDto);
+    }
+
+
+    @ApiOperation(value="deleteAddress",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code= 404,message="Address not found")
+    })
+    @RequestMapping(value = "/{user_id}/deleteAddress/{address_id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAddress(@PathVariable("user_id") BigDecimal userId,@PathVariable("address_id") BigDecimal addressId){
+        return userService.deleteAddress(userId,addressId);
+    }
+
+
+    @ApiOperation(value="update Address",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code= 404,message="Address not found")
+    })
+    @RequestMapping(value = "/{user_id}/updateAddress", method = RequestMethod.POST)
+     public ResponseEntity updateAddress(@Valid AddressDto addressDto){
+        return userService.updateAddress(addressDto);
+    }
+
 }
+

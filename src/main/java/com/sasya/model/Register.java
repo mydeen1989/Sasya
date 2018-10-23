@@ -24,15 +24,11 @@ public class Register {
     @Column(name = "created_by")
     private String createdBy;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumns(
-            @JoinColumn(name = "ID",referencedColumnName = "register_id")
-    )
+    @OneToOne(mappedBy="register",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private User user;
 
     @Column(name = "created_date")
     private String createdDate;
-
 
 
     public BigDecimal getId() {
