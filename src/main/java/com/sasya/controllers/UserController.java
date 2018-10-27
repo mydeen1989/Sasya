@@ -88,7 +88,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/{user_id}/addAddress", method = RequestMethod.POST ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
+    @RequestMapping(value = "/{user_id}/address/addAddress", method = RequestMethod.POST ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
     public ResponseEntity addAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto address){
         return userService.addAddress(address, userId);
     }
@@ -100,7 +100,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/{user_id}/deleteAddress/{address_id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{user_id}/address/{address_id}/deleteAddress", method = RequestMethod.DELETE)
     public ResponseEntity deleteAddress(@PathVariable("user_id") BigDecimal userId,@PathVariable("address_id") BigDecimal addressId){
         return userService.deleteAddress(userId,addressId);
     }
@@ -112,7 +112,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/{user_id}/updateAddress/{address_id}", method = RequestMethod.PUT ,
+    @RequestMapping(value = "/{user_id}/address/{address_id}/updateAddress", method = RequestMethod.PUT ,
             consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
      public ResponseEntity updateAddress(@PathVariable("user_id") BigDecimal userId,
                                          @PathVariable("address_id") BigDecimal addressId,
@@ -126,7 +126,7 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/getAllCategory", method = RequestMethod.GET)
     public ResponseEntity getAllCategories(){
         return commonService.getAllCategory();
     }

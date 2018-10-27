@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 /**
  * UserDto
  */
-@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","otp","register"})
+@JsonPropertyOrder({"id","username","password","email","family_members_count","device_id","device_type","otp","register"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements IResponseDto{
 
@@ -28,7 +28,6 @@ public class UserDto implements IResponseDto{
 
 
     @ApiModelProperty
-    @NotNull
     @JsonProperty("password")
     private String password;
 
