@@ -35,7 +35,7 @@ public class AdminController {
             @ApiResponse(code=400,message="Invalid Request")
     })
 
-    @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
+    @RequestMapping(value = "/category/addCategory", method = RequestMethod.POST)
     public ResponseEntity addCategory(@RequestPart(value = "file") MultipartFile file,
                                       @RequestParam("categoryName") String categoryName) {
         return adminService.addCategory(file,categoryName);
@@ -48,7 +48,7 @@ public class AdminController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/removeCategory/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/category/{id}/removeCategory", method = RequestMethod.DELETE)
     public ResponseEntity deleteCategory(@PathVariable("id") BigDecimal id) {
         return adminService.deleteCategory(id);
     }
@@ -60,7 +60,7 @@ public class AdminController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code=400,message="Invalid Request")
     })
-    @RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/category/{id}/updateCategory", method = RequestMethod.PUT)
     public ResponseEntity updateCategory(@PathVariable("id") BigDecimal id, @RequestPart(value = "file")
             MultipartFile file, @RequestParam("categoryName") String categoryName) {
         return adminService.updateCategory(id, file, categoryName);
@@ -72,7 +72,7 @@ public class AdminController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/getAllCategory", method = RequestMethod.GET)
     public ResponseEntity getAllCategories(){
         return commonService.getAllCategory();
     }

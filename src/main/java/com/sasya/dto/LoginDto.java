@@ -27,7 +27,6 @@ public class LoginDto implements IResponseDto{
     private String otp;
 
     @ApiModelProperty
-    @NotNull
     @JsonProperty("password")
     private String password;
 
