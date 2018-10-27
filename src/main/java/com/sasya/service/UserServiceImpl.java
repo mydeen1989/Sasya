@@ -19,9 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.sasya.util.SasyaUtils.convertAddressDtoToEntity;
-import static com.sasya.util.SasyaUtils.convertUserDtoToUserModel;
-import static com.sasya.util.SasyaUtils.convertUserModelToUserDto;
+import static com.sasya.util.SasyaUtils.*;
 
 
 /**
@@ -33,6 +31,8 @@ public class UserServiceImpl {
 
     @Inject
     private UserDAO userDao;
+
+
 
 
 
@@ -70,7 +70,7 @@ public class UserServiceImpl {
                         body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.MOBILE_NOT_REGISTERED));
             }
 
-            if(register.getUser().getPhone()!=null) {
+            if(register.getUser()!=null && register.getUser().getPhone()!=null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_ALREADY_REGISTERED));
             }
             userDao.addUserDetails(convertUserDtoToUserModel(user, register));
@@ -87,12 +87,15 @@ public class UserServiceImpl {
      */
     public ResponseEntity login(LoginDto loginDto) {
         try {
-            User user = userDao.login(new BigDecimal(loginDto.getMobile()),loginDto.getPassword());
-            if(user!=null) {
-                UserDto userDto = convertUserModelToUserDto(user);
-                return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.USER_FOUND,userDto));
+            if(loginDto.getOtp() !=null && loginDto.getOtp().equals("0000")) {
+                User user = userDao.login(new BigDecimal(loginDto.getMobile()));
+                if (user != null) {
+                    UserDto userDto = convertUserModelToUserDto(user);
+                    return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.USER_FOUND, userDto));
+                }
+                return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_NOT_FOUND));
             }
-            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.FAILURE,SasyaConstants.USER_NOT_FOUND));
+            return ResponseEntity.badRequest().body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.OTP_FAILURE));
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -102,13 +105,16 @@ public class UserServiceImpl {
      * @param addressDto
      * @return
      */
-    public ResponseEntity addAddress(AddressDto addressDto) {
+    public ResponseEntity addAddress(AddressDto addressDto, BigDecimal userId) {
         try {
-            User user = userDao.findUserById(addressDto.getUserId());
-            Address address = convertAddressDtoToEntity(addressDto,user);
-            user.getAddress().add(address);
-            userDao.updateUserDetails(user);
-            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.ADDRESS_ADD_SUCCESS));
+            User user = userDao.findUserById(userId);
+            if(Objects.nonNull(user)) {
+                Address address = convertAddressDtoToEntity(addressDto, user);
+                user.getAddress().add(address);
+                userDao.updateUserDetails(user);
+                return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.ADDRESS_ADD_SUCCESS));
+            }
+            return ResponseEntity.badRequest().body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_NOT_FOUND));
         } catch (SasyaException sasyaExp){
             throw sasyaExp;
         }
@@ -141,14 +147,14 @@ public class UserServiceImpl {
      * @param addressDto
      * @return
      */
-    public ResponseEntity updateAddress(AddressDto addressDto) {
+    public ResponseEntity updateAddress(BigDecimal userId, BigDecimal addressId, AddressDto addressDto) {
         try {
-            Address address = userDao.findAddressById(addressDto.getUserId(),addressDto.getId());
+            Address address = userDao.findAddressById(userId,addressId);
             if(address==null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE,SasyaConstants.ADDRESS_NOT_FOUND));
             }
             convertAddressDtoToEntity(addressDto,address);
-            address.setUpdatedBy(addressDto.getUserId().toPlainString());
+            address.setUpdatedBy(userId.toPlainString());
             address.setUpdatedDate(SasyaConstants.formatter.format(new Date()));
             userDao.mergeObject(address);
             return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,SasyaConstants.ADDRESS_UPDATE_SUCCESS));
