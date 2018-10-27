@@ -26,6 +26,9 @@ public class User {
     @Column(name = "user_name", nullable = false)
     private String userName;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "email")
     private String email;
 
@@ -98,6 +101,14 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

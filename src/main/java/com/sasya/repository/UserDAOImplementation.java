@@ -147,6 +147,7 @@ public class UserDAOImplementation implements UserDAO {
         return addressList.get(0);
     }
 
+
     @Override
     public <T> void mergeObject(T object) {
         entityManager.merge(object);

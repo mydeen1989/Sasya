@@ -2,18 +2,16 @@ package com.sasya.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-@JsonPropertyOrder({"id","user_id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
-public class AddressDto {
+@JsonPropertyOrder({"address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
+public class AddressDto implements IResponseDto {
 
-    @ApiModelProperty(value = "id of address",required = true)
+    @ApiModelProperty(value = "id of Address")
     @JsonProperty("id")
     private BigDecimal id;
 
@@ -52,6 +50,15 @@ public class AddressDto {
 
     @JsonProperty("secondary_mobile")
     private String secondary_mobile;
+
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
 
     public String getAddress() {
         return address;
@@ -117,11 +124,4 @@ public class AddressDto {
         this.secondary_mobile = secondary_mobile;
     }
 
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
 }

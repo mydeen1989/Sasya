@@ -16,12 +16,21 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements IResponseDto{
 
+    @ApiModelProperty(value = "User Id")
+    @JsonProperty("id")
+    private BigDecimal id;
+
     @NotNull
     @Size(min=3,max = 100)
     @ApiModelProperty(required = true)
     @JsonProperty("username")
     private String userName;
 
+
+    @ApiModelProperty
+    @NotNull
+    @JsonProperty("password")
+    private String password;
 
     @NotNull
     @Email
@@ -52,6 +61,14 @@ public class UserDto implements IResponseDto{
     @JsonProperty("register")
     private RegisterDto register;
 
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -60,6 +77,13 @@ public class UserDto implements IResponseDto{
         this.userName = userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getEmail() {
         return email;

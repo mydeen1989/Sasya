@@ -12,6 +12,9 @@ import java.util.Date;
 
 public class SasyaUtils {
 
+
+
+
     /**
      * @param userDto
      * @param register
@@ -39,6 +42,7 @@ public class SasyaUtils {
      */
     public static UserDto convertUserModelToUserDto(User user) {
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         userDto.setDeviceId(user.getDeviceId());
         userDto.setDeviceType(user.getDeviceType());
         userDto.setEmail(user.getEmail());
@@ -67,6 +71,5 @@ public class SasyaUtils {
         addressEntity.setActive("1");
         return addressEntity;
     }
-
 
 }

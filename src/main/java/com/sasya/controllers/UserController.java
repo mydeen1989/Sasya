@@ -4,23 +4,19 @@ import com.sasya.dto.AddressDto;
 import com.sasya.dto.LoginDto;
 import com.sasya.dto.RegisterDto;
 import com.sasya.dto.UserDto;
-import com.sasya.exception.SasyaException;
-import com.sasya.service.UserServiceImpl;
 import com.sasya.response.SasyaResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.sasya.service.CommonServiceImpl;
 import com.sasya.service.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
 /**
@@ -28,11 +24,16 @@ import java.math.BigDecimal;
  */
 @RestController
 @RequestMapping(value="v1/user")
-@Api(value="user",description="User Profile",produces ="application/json")
+@Api(value="user",description="User Profile")
 public class UserController {
 
     @Inject
     private UserServiceImpl userService;
+
+    @Inject
+    private CommonServiceImpl commonService;
+
+    private static final String SUFFIX = "/";
 
     /**
      * @param register
@@ -81,7 +82,7 @@ public class UserController {
     }
 
 
-    @ApiOperation(value="addAddress",response= SasyaResponse.class)
+    @ApiOperation(value="Add Address",response= SasyaResponse.class)
     @ApiResponses(value={
             @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
@@ -93,7 +94,7 @@ public class UserController {
     }
 
 
-    @ApiOperation(value="deleteAddress",response= SasyaResponse.class)
+    @ApiOperation(value="Delete Address",response= SasyaResponse.class)
     @ApiResponses(value={
             @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
@@ -105,15 +106,29 @@ public class UserController {
     }
 
 
-    @ApiOperation(value="update Address",response= SasyaResponse.class)
+    @ApiOperation(value="Update Address",response= SasyaResponse.class)
     @ApiResponses(value={
             @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/{user_id}/updateAddress", method = RequestMethod.PUT ,consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
-     public ResponseEntity updateAddress(@PathVariable("user_id") BigDecimal userId,@Valid @RequestBody AddressDto address){
-        return userService.updateAddress(userId,address);
+    @RequestMapping(value = "/{user_id}/updateAddress/{address_id}", method = RequestMethod.PUT ,
+            consumes = {MediaType.APPLICATION_JSON},produces = {MediaType.APPLICATION_JSON})
+     public ResponseEntity updateAddress(@PathVariable("user_id") BigDecimal userId,
+                                         @PathVariable("address_id") BigDecimal addressId,
+                                         @Valid @RequestBody AddressDto address){
+        return userService.updateAddress(userId, addressId, address);
+    }
+
+    @ApiOperation(value="Categories",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code= 404,message="Address not found")
+    })
+    @RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
+    public ResponseEntity getAllCategories(){
+        return commonService.getAllCategory();
     }
 
 }

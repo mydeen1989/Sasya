@@ -30,4 +30,11 @@ public class SasyaConstants {
     public static final String ADDRESS_ADD_SUCCESS = "User address added";
     public static final String ADDRESS_NOT_FOUND = "Address not found";
     public static final String ADDRESS_UPDATE_SUCCESS = "Address updated successfully";
+
+    public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category added Successfully";
+    public static final String CATEGORY_UPDATED_SUCCESSFULLY = "Category updated Successfully";
+    public static final String CATEGORY_REMOVED_SUCCESSFULLY = "Category removed Successfully";
+    public static final String SUFFIX = "/";
+
+    public static final String CATEGORY_NOT_FOUND = "Category Not found";
 }

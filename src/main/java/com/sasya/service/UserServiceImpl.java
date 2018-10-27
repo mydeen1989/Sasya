@@ -19,9 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.sasya.util.SasyaUtils.convertAddressDtoToEntity;
-import static com.sasya.util.SasyaUtils.convertUserDtoToUserModel;
-import static com.sasya.util.SasyaUtils.convertUserModelToUserDto;
+import static com.sasya.util.SasyaUtils.*;
 
 
 /**
@@ -33,6 +31,8 @@ public class UserServiceImpl {
 
     @Inject
     private UserDAO userDao;
+
+
 
 
 
@@ -147,9 +147,9 @@ public class UserServiceImpl {
      * @param addressDto
      * @return
      */
-    public ResponseEntity updateAddress(BigDecimal userId,AddressDto addressDto) {
+    public ResponseEntity updateAddress(BigDecimal userId, BigDecimal addressId, AddressDto addressDto) {
         try {
-            Address address = userDao.findAddressById(userId,addressDto.getId());
+            Address address = userDao.findAddressById(userId,addressId);
             if(address==null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE,SasyaConstants.ADDRESS_NOT_FOUND));
             }
