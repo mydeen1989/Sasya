@@ -2,22 +2,25 @@ package com.sasya.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
 
 /**
  * Register
  */
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "sub_category")
+public class SubCategory {
+
 
     @Id
-    @Column(name="category_id")
+    @Column(name="sub_category_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "category_id")
+    private BigDecimal categoryId;
 
     @Column(name = "image_url")
     private String image;
@@ -36,6 +39,10 @@ public class Category {
 
     @Column(name = "updated_date")
     private String updatedDate;
+
+    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="category_id",insertable = false,updatable = false)
+    private Category category;
 
 
     public BigDecimal getId() {
@@ -103,5 +110,19 @@ public class Category {
         this.createdDate = createdDate;
     }
 
+    public BigDecimal getCategoryId() {
+        return categoryId;
+    }
 
+    public void setCategoryId(BigDecimal categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
