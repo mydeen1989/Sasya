@@ -66,14 +66,12 @@ public class UserDAOImplementation implements UserDAO {
 
     /**
      * @param mobile
-     * @param password
      * @return
      */
     @Override
-    public User login(BigDecimal mobile, String password) {
-       List<User> lstUser = entityManager.createQuery("select u from User u where phone=?1 and password=?2 and active='1'")
+    public User login(BigDecimal mobile) {
+       List<User> lstUser = entityManager.createQuery("select u from User u where phone=?1 and active='1'")
                .setParameter(1,mobile)
-               .setParameter(2,password)
                .getResultList();
        if(lstUser.isEmpty()){
            return null;
@@ -134,7 +132,7 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public boolean deleteAddress(BigDecimal userId, BigDecimal addressId) {
-        Query updateQuery = entityManager.createNativeQuery("update Address a set a.active=?1 where a.userId=?2 and a.id=?3 and a.active='1'");
+        Query updateQuery = entityManager.createNativeQuery("update Address a set a.active=?1 where a.user_id=?2 and a.id=?3 and a.active='1'");
         updateQuery.setParameter(1,'0');
         updateQuery.setParameter(2, userId);
         updateQuery.setParameter(3, addressId);
@@ -151,10 +149,11 @@ public class UserDAOImplementation implements UserDAO {
                 .setParameter(2,userId)
                 .getResultList();
         if(addressList.isEmpty()){
-            return addressList.get(0);
+            return null;
         }
-        return null;
+        return addressList.get(0);
     }
+
 
     @Override
     public List<Address> getAddress(BigDecimal userId, List<BigDecimal> addressIds,String type){

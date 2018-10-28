@@ -12,9 +12,13 @@ import java.math.BigDecimal;
 /**
  * UserDto
  */
-@JsonPropertyOrder({"username","password","email","family_members_count","device_id","device_type","otp","register"})
+@JsonPropertyOrder({"id","username","password","email","family_members_count","device_id","device_type","otp","register"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements IResponseDto{
+
+    @ApiModelProperty(value = "User Id")
+    @JsonProperty("id")
+    private BigDecimal id;
 
     @NotNull
     @Size(min=3,max = 100,message="user name should be minimum 3 characters to max 100 characters")
@@ -22,8 +26,8 @@ public class UserDto implements IResponseDto{
     @JsonProperty("username")
     private String userName;
 
-    @Size(max = 10)
-    @ApiModelProperty(required = true)
+
+    @ApiModelProperty
     @JsonProperty("password")
     private String password;
 
@@ -55,6 +59,14 @@ public class UserDto implements IResponseDto{
     @ApiModelProperty(required = true)
     @JsonProperty("register")
     private RegisterDto register;
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

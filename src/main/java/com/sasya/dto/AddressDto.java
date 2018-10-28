@@ -1,25 +1,19 @@
 package com.sasya.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-@JsonPropertyOrder({"id","user_id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddressDto implements IResponseDto{
+@JsonPropertyOrder({"id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
+public class AddressDto implements IResponseDto {
 
-    @ApiModelProperty(value = "id of address",required = true)
+    @ApiModelProperty(value = "id of Address")
     @JsonProperty("id")
     private BigDecimal id;
-
-    @NotNull
-    @ApiModelProperty(value = "User Id of an existing user. Usually id is hidden to the user view",required = true)
-    @JsonProperty("user_id")
-    private BigDecimal userId;
 
     @ApiModelProperty(required = true)
     @Size(min=1,max=500)
@@ -57,12 +51,13 @@ public class AddressDto implements IResponseDto{
     @JsonProperty("secondary_mobile")
     private String secondary_mobile;
 
-    public BigDecimal getUserId() {
-        return userId;
+
+    public BigDecimal getId() {
+        return id;
     }
 
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
+    public void setId(BigDecimal id) {
+        this.id = id;
     }
 
     public String getAddress() {
@@ -129,11 +124,4 @@ public class AddressDto implements IResponseDto{
         this.secondary_mobile = secondary_mobile;
     }
 
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
 }

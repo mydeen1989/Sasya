@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 /**
  * UserController
  */
-@JsonPropertyOrder({"mobile","password","otp"})
+@JsonPropertyOrder({"mobile","otp","password"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginDto implements IResponseDto{
 
@@ -21,14 +21,14 @@ public class LoginDto implements IResponseDto{
     @JsonProperty("mobile")
     private String mobile;
 
-    @ApiModelProperty(required = false)
-    @JsonProperty("password")
-    private String password;
-
     @ApiModelProperty(required = true)
     @NotNull(message = "OTP not available")
     @JsonProperty("otp")
     private String otp;
+
+    @ApiModelProperty
+    @JsonProperty("password")
+    private String password;
 
     public String getMobile() {
         return mobile;
@@ -38,19 +38,19 @@ public class LoginDto implements IResponseDto{
         this.mobile = mobile;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getOtp() {
         return otp;
     }
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
