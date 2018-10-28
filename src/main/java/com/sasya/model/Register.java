@@ -12,6 +12,7 @@ public class Register {
 
 
     @Id
+    @Column(name = "register_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 

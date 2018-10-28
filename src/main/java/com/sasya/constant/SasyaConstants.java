@@ -34,7 +34,26 @@ public class SasyaConstants {
     public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category added Successfully";
     public static final String CATEGORY_UPDATED_SUCCESSFULLY = "Category updated Successfully";
     public static final String CATEGORY_REMOVED_SUCCESSFULLY = "Category removed Successfully";
+    public static final String CATEGORY_NOT_FOUND = "Category Not found";
+
+    public static final String SUB_CATEGORY_ADDED_SUCCESSFULLY = "SubCategory added Successfully";
+    public static final String SUB_CATEGORY_UPDATED_SUCCESSFULLY = "SubCategory updated Successfully";
+    public static final String SUB_CATEGORY_REMOVED_SUCCESSFULLY = "SubCategory removed Successfully";
+    public static final String SUB_CATEGORY_NOT_FOUND = "SubCategory Not found";
+
+    public static final String PRODUCT_ADDED_SUCCESSFULLY = "Product added Successfully";
+    public static final String PRODUCT_UPDATED_SUCCESSFULLY = "Product updated Successfully";
+    public static final String PRODUCT_REMOVED_SUCCESSFULLY = "Product removed Successfully";
+    public static final String PRODUCT_IMAGE_ADDED_SUCCESSFULLY = "Product image added Successfully";
+    public static final String PRODUCT_FOUND = "Product Found";
+    public static final String PRODUCT_NOT_FOUND = "Product Not found";
+
     public static final String SUFFIX = "/";
 
-    public static final String CATEGORY_NOT_FOUND = "Category Not found";
+    public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    public static final String NOT_FOUND = "Not Found";
+    public static final String CREATED = "Created";
+    public static final String INVALID_REQUEST = "Invalid Request";
+
+
 }
