@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * UserDAO
@@ -54,7 +55,6 @@ public interface UserDAO {
 
 
     /**
-     *
      * @param id
      * @return
      */
@@ -67,23 +67,24 @@ public interface UserDAO {
     public User loadUser(BigDecimal mobile);
 
     /**
-     *
      * @param userId
      * @param addressId
      * @return
      */
-    public boolean deleteAddress(BigDecimal userId,BigDecimal addressId);
+    public boolean deleteAddress(BigDecimal userId, BigDecimal addressId);
 
 
     /**
-     *
      * @param userId
      * @param addressId
      * @return
      */
     public Address findAddressById(BigDecimal userId, BigDecimal addressId);
 
-     public <T> void mergeObject(T object);
+    public List<Address> getAddress(BigDecimal userId, List<BigDecimal> addressIds,String type);
+
+    public <T> void mergeObject(T object);
+
 
 
 }

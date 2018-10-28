@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class UserDto implements IResponseDto{
 
     @NotNull
-    @Size(min=3,max = 100)
+    @Size(min=3,max = 100,message="user name should be minimum 3 characters to max 100 characters")
     @ApiModelProperty(required = true)
     @JsonProperty("username")
     private String userName;
@@ -28,7 +28,7 @@ public class UserDto implements IResponseDto{
     private String password;
 
     @NotNull
-    @Email
+    @Email(message="invalid email information")
     @ApiModelProperty(required = true)
     @JsonProperty("email")
     private String email;
@@ -36,22 +36,22 @@ public class UserDto implements IResponseDto{
     @JsonProperty("family_members_count")
     private BigDecimal familyMembersCount;
 
-    @NotNull
+    @NotNull(message = "device id not available")
     @ApiModelProperty(required = true)
     @JsonProperty("device_id")
     private String deviceId;
 
-    @NotNull
+    @NotNull(message="device type not available")
     @ApiModelProperty(required = true)
     @JsonProperty("device_type")
     private String deviceType;
 
-    @NotNull
+    @NotNull(message = "OTP value not available")
     @ApiModelProperty(required = true)
     @JsonProperty("otp")
     private String otp;
 
-    @NotNull
+    @NotNull(message = "register mobile information not available")
     @ApiModelProperty(required = true)
     @JsonProperty("register")
     private RegisterDto register;

@@ -1,8 +1,6 @@
 package com.sasya.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -11,14 +9,14 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @JsonPropertyOrder({"id","user_id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
-public class AddressDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AddressDto implements IResponseDto{
 
     @ApiModelProperty(value = "id of address",required = true)
     @JsonProperty("id")
     private BigDecimal id;
 
     @NotNull
-    @Size(min=1)
     @ApiModelProperty(value = "User Id of an existing user. Usually id is hidden to the user view",required = true)
     @JsonProperty("user_id")
     private BigDecimal userId;

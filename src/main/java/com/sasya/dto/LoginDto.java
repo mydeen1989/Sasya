@@ -17,7 +17,7 @@ public class LoginDto implements IResponseDto{
 
     @ApiModelProperty(required = true)
     @NotNull
-    @Size(min=10,max=10)
+    @Size(min=10,max=10,message = "mobile number should be 10 characters")
     @JsonProperty("mobile")
     private String mobile;
 
@@ -26,7 +26,7 @@ public class LoginDto implements IResponseDto{
     private String password;
 
     @ApiModelProperty(required = true)
-    @NotNull
+    @NotNull(message = "OTP not available")
     @JsonProperty("otp")
     private String otp;
 

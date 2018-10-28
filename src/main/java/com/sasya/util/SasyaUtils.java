@@ -68,5 +68,17 @@ public class SasyaUtils {
         return addressEntity;
     }
 
+    public static AddressDto convertAddressEntityToDto(Address addressEntity){
+        AddressDto dto = new AddressDto();
+        dto.setAddress(addressEntity.getAddress());
+        dto.setAddressType(addressEntity.getAddressType());
+        dto.setCity(addressEntity.getCity());
+        dto.setCountry(addressEntity.getCountry());
+        dto.setLandmark(addressEntity.getLandmark());
+        dto.setPincode(addressEntity.getPincode().toPlainString());
+        dto.setSecondary_mobile(addressEntity.getSecondaryMobile());
+        dto.setState(addressEntity.getState());
+        return dto;
+    }
 
 }

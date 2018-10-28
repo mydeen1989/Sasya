@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sasya.dto.IResponseDto;
 
+import java.util.List;
+
 /**
  * SasyaResponse
  */
@@ -18,6 +20,10 @@ public class SasyaResponse {
 
     @JsonProperty("result")
     private IResponseDto responseDto;
+
+    @JsonProperty("resultArray")
+    private List<? extends IResponseDto> responseDtoArray;
+
 
     public SasyaResponse() {
 
@@ -59,7 +65,16 @@ public class SasyaResponse {
         this.responseDto = responseDto;
     }
 
-    public static SasyaResponse build(String status,String message){
+
+    public List<? extends IResponseDto> getResponseDtoArray() {
+        return responseDtoArray;
+    }
+
+    public void setResponseDtoArray(List<? extends IResponseDto> responseDtoArray) {
+        this.responseDtoArray = responseDtoArray;
+    }
+
+    public static SasyaResponse build(String status, String message){
         SasyaResponse response = new SasyaResponse();
         response.setStatus(status);
         response.setMessage(message);
@@ -70,6 +85,16 @@ public class SasyaResponse {
         SasyaResponse response = new SasyaResponse();
         if(responseDto!=null){
             response.setResponseDto(responseDto);
+        }
+        response.setStatus(status);
+        response.setMessage(message);
+        return response;
+    }
+
+    public static SasyaResponse build(String status, String message, List<? extends IResponseDto> resultArray){
+        SasyaResponse response = new SasyaResponse();
+        if(resultArray!=null){
+            response.setResponseDtoArray(resultArray);
         }
         response.setStatus(status);
         response.setMessage(message);

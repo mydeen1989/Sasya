@@ -7,6 +7,7 @@ import com.sasya.dto.UserDto;
 import com.sasya.exception.SasyaException;
 import com.sasya.service.UserServiceImpl;
 import com.sasya.response.SasyaResponse;
+import org.jvnet.hk2.annotations.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * UserController
@@ -116,6 +118,21 @@ public class UserController {
      public ResponseEntity updateAddress(@Valid AddressDto addressDto){
         return userService.updateAddress(addressDto);
     }
+
+
+    @ApiOperation(value="get Address",response= SasyaResponse.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="OK",response=SasyaResponse.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code= 404,message="Address not found")
+    })
+    @RequestMapping(value = "/{user_id}/getAddress", method = RequestMethod.GET)
+    public ResponseEntity getAddress(@PathVariable("user_id") BigDecimal userId,  @RequestParam(value = "id",required = false) List<BigDecimal> addressIds,
+                                     @RequestParam(value = "type",required = true) String type){
+        return userService.getAddress(userId, addressIds, type);
+
+    }
+
 
 }
 
