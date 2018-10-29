@@ -27,7 +27,7 @@ public interface CommonDAO {
      * @param popularity
      * @return
      */
-    public List<Product> getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity,String filter,List<BigDecimal> productIds);
+    public List<Product> getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity, String productIds);
 
     /**
      * @param id

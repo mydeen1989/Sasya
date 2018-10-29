@@ -11,10 +11,11 @@ import com.sasya.model.SubCategory;
 import com.sasya.repository.CommonDAO;
 import com.sasya.response.SasyaResponse;
 import com.sasya.util.Mapper;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -46,12 +47,7 @@ public class CommonServiceImpl {
             }
             List<CategoryDto> categoryDtos = new ArrayList<>();
             categories.forEach(category -> {
-                CategoryDto categoryDto = new CategoryDto();
-                categoryDto.setId(category.getId());
-                categoryDto.setName(category.getName());
-                categoryDto.setImage_url(category.getImage());
-                categoryDto.setActive(category.getActive());
-                categoryDtos.add(categoryDto);
+                categoryDtos.add(Mapper.convertCategoryEntityToDTO(category));
             });
             return ResponseEntity.status(HttpStatus.OK).body(categoryDtos);
         } catch (SasyaException sasyaExp) {
@@ -73,16 +69,7 @@ public class CommonServiceImpl {
             }
             List<SubCategoryDto> subCategoryDtos = new ArrayList<>();
             subCategories.forEach(subCategory -> {
-                SubCategoryDto subCategoryDto = new SubCategoryDto();
-                subCategoryDto.setId(Objects.nonNull(subCategory.getId()) ? subCategory.getId() : null);
-                subCategoryDto.setSubCategoryName(Objects.nonNull(subCategory.getName()) ? subCategory.getName() : null);
-                if (Objects.nonNull(subCategory.getCategory())) {
-                    subCategoryDto.setCategoryId(Objects.nonNull(subCategory.getCategory().getId()) ? subCategory.getCategory().getId() : null);
-                    subCategoryDto.setCategoryName(Objects.nonNull(subCategory.getCategory().getName()) ? subCategory.getCategory().getName() : null);
-                }
-                subCategoryDto.setImage_url(Objects.nonNull(subCategory.getImage()) ? subCategory.getImage() : null);
-                subCategoryDto.setActive(Objects.nonNull(subCategory.getActive()) ? subCategory.getActive() : null);
-                subCategoryDtos.add(subCategoryDto);
+                subCategoryDtos.add(Mapper.convertSubCategoryEntitytoDTO(subCategory));
             });
             return ResponseEntity.status(HttpStatus.OK).body(subCategoryDtos);
         } catch (SasyaException sasyaExp) {
@@ -93,46 +80,32 @@ public class CommonServiceImpl {
     }
 
 
+
     /**
      * @param categoryId
      * @param subCategoryId
      * @param popularity
      * @return
      */
-    public ResponseEntity getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity,String filter,List<BigDecimal> productIds) {
+    public ResponseEntity getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity,List<BigDecimal> productIds) {
         try {
-            List<Product> products = commonDAO.getAllProducts(categoryId, subCategoryId, popularity,filter,productIds);
+            String productId = null;
+            if(CollectionUtils.isNotEmpty(productIds)) { StringBuilder builder = new StringBuilder(StringUtils.EMPTY);
+               productIds.forEach(id -> {
+                   builder.append(id).append(",");
+               });
+                productId =  builder.deleteCharAt(builder.lastIndexOf(",")).toString();
+           }
+            List<Product> products = commonDAO.getAllProducts(categoryId, subCategoryId, popularity,productId);
             if (CollectionUtils.isEmpty(products)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.PRODUCT_NOT_FOUND));
             }
             List<ProductDto> productDtos = new ArrayList<>();
             products.forEach(product -> {
-                ProductDto productDto = new ProductDto();
-                Mapper.convertEntityToDTOObject(product, productDto);
-                productDtos.add(productDto);
+                productDtos.add( Mapper.convertEntityToDTOObject(product));
             });
 
             return ResponseEntity.status(HttpStatus.OK).body(productDtos);
-        } catch (SasyaException sasyaExp) {
-            throw sasyaExp;
-        } catch (Exception exp) {
-            throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * @param id
-     * @return
-     */
-    public ResponseEntity getProduct(BigDecimal id) {
-        try {
-            Product product = commonDAO.getProduct(id);
-            if (Objects.isNull(product)) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.PRODUCT_NOT_FOUND));
-            }
-            ProductDto productDto = new ProductDto();
-            Mapper.convertEntityToDTOObject(product, productDto);
-            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.PRODUCT_FOUND, Collections.singletonList(productDto)));
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {

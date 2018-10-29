@@ -11,14 +11,14 @@ import java.util.List;
 /**
  * UserDto
  */
-@JsonPropertyOrder({"id","username","password","email","family_members_count","device_id","device_type","otp","register"})
+@JsonPropertyOrder({"userId","username","password","email","family_members_count","device_id","device_type","otp","register","address"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeName("user")
 public class UserDto implements IResponseDto{
 
     @ApiModelProperty(value = "User Id")
-    @JsonProperty(value = "id")
-    private BigDecimal id;
+    @JsonProperty(value = "userId")
+    private BigDecimal userId;
 
     @Size(min=3,max = 100,message="Invalid user name")
     @ApiModelProperty(required = true)
@@ -66,12 +66,12 @@ public class UserDto implements IResponseDto{
     @JsonProperty("address")
     private List<AddressDto> address;
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getUserId() {
+        return userId;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public void setUserId(BigDecimal userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

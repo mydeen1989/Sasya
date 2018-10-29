@@ -150,30 +150,14 @@ public class AdminController {
             @ApiResponse(code = 400, message = SasyaConstants.INVALID_REQUEST),
             @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
     })
-    @RequestMapping(value = "/product/getAllProducts", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/getProducts", method = RequestMethod.GET)
     public ResponseEntity getAllProducts(@RequestParam(value = "categoryId", required = false) BigDecimal categoryId,
                                          @RequestParam(value = "subCategoryId", required = false) BigDecimal subCategoryId,
                                          @RequestParam(value = "popularity", required = false) String popularity,
-                                         @RequestParam(value = "id", required = false) List<BigDecimal> ids,
-                                         @RequestParam(value = "filter", required = true) String filter) {
-        return commonService.getAllProducts(categoryId, subCategoryId, popularity,filter,ids);
+                                         @RequestParam(value = "id", required = false) List<BigDecimal> ids) {
+        return commonService.getAllProducts(categoryId, subCategoryId, popularity, ids);
     }
 
-
-    /**
-     * @param id
-     * @return
-     */
-    @ApiOperation(value = "Get Product", response = SasyaResponse.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
-            @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
-    })
-    @RequestMapping(value = "/product/{id}/getProduct", method = RequestMethod.GET)
-    public ResponseEntity getProduct(@PathVariable("id") BigDecimal id) {
-        return commonService.getProduct(id);
-    }
 
     /**
      * @param id
@@ -277,6 +261,21 @@ public class AdminController {
     @RequestMapping(value = "/subCategory/getAllSubCategory", method = RequestMethod.GET)
     public ResponseEntity getAllSubCategories() {
         return commonService.getAllSubCategory();
+    }
+
+
+    /**
+     * @return
+     */
+    @ApiOperation(value = "Get All Users", response = SasyaResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
+            @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
+            @ApiResponse(code = 400, message = SasyaConstants.INVALID_REQUEST)
+    })
+    @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+    public ResponseEntity getAllUsers(@RequestParam(value = "id", required = false) List<BigDecimal> ids) {
+        return adminService.getAllUsers(ids);
     }
 
 }
