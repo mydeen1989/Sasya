@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,13 +17,13 @@ import javax.validation.constraints.Size;
 public class LoginDto implements IResponseDto{
 
     @ApiModelProperty(required = true)
-    @NotNull
-    @Size(min=10,max=10)
+    @Size(min=10,max=10,message = "Invalid mobile number")
     @JsonProperty("mobile")
     private String mobile;
 
     @ApiModelProperty(required = true)
-    @NotNull
+    @NotNull(message = "OTP not available")
+    @NotBlank(message = "OTP not available")
     @JsonProperty("otp")
     private String otp;
 

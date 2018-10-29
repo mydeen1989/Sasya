@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "v1/admin")
@@ -152,8 +153,10 @@ public class AdminController {
     @RequestMapping(value = "/product/getAllProducts", method = RequestMethod.GET)
     public ResponseEntity getAllProducts(@RequestParam(value = "categoryId", required = false) BigDecimal categoryId,
                                          @RequestParam(value = "subCategoryId", required = false) BigDecimal subCategoryId,
-                                         @RequestParam(value = "popularity", required = false) String popularity) {
-        return commonService.getAllProducts(categoryId, subCategoryId, popularity);
+                                         @RequestParam(value = "popularity", required = false) String popularity,
+                                         @RequestParam(value = "id", required = false) List<BigDecimal> ids,
+                                         @RequestParam(value = "filter", required = true) String filter) {
+        return commonService.getAllProducts(categoryId, subCategoryId, popularity,filter,ids);
     }
 
 

@@ -5,14 +5,21 @@ import com.sasya.exception.SasyaException;
 import com.sasya.model.Address;
 import com.sasya.model.Register;
 import com.sasya.model.User;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -145,6 +152,24 @@ public class UserDAOImplementation implements UserDAO {
             return null;
         }
         return addressList.get(0);
+    }
+
+
+    @Override
+    public List<Address> getAddress(BigDecimal userId, List<BigDecimal> addressIds,String type){
+        List<Address> addressList = Collections.emptyList();
+        if(type.equalsIgnoreCase("ALL")){
+            addressList = entityManager.createQuery("from Address a where a.userId=?1").
+                    setParameter(1,userId)
+                    .getResultList();
+        }
+        else {
+            addressList = entityManager.createQuery("from Address a where a.userId=?1 and a.id in (?2)")
+                    .setParameter(1,userId)
+                    .setParameter(2,addressIds)
+                    .getResultList();
+        }
+        return addressList;
     }
 
 

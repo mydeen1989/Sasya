@@ -8,7 +8,9 @@ import com.sasya.model.Register;
 import com.sasya.model.User;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public class SasyaUtils {
 
@@ -22,6 +24,10 @@ public class SasyaUtils {
             gstPrice = gstPercent*price/100;
         }
         return price-discountPrice+gstPrice;
+    }
+
+    public static <T> Stream<T> getEmptyStreamOnNull(Collection<T> collection){
+        return collection!=null ? collection.stream() : Stream.empty();
     }
 
 

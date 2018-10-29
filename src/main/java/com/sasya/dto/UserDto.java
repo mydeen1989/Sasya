@@ -1,27 +1,26 @@
 package com.sasya.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * UserDto
  */
 @JsonPropertyOrder({"id","username","password","email","family_members_count","device_id","device_type","otp","register"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonTypeName("user")
 public class UserDto implements IResponseDto{
 
     @ApiModelProperty(value = "User Id")
-    @JsonProperty("id")
+    @JsonProperty(value = "id")
     private BigDecimal id;
 
-    @NotNull
-    @Size(min=3,max = 100)
+    @Size(min=3,max = 100,message="Invalid user name")
     @ApiModelProperty(required = true)
     @JsonProperty("username")
     private String userName;
@@ -31,8 +30,8 @@ public class UserDto implements IResponseDto{
     @JsonProperty("password")
     private String password;
 
-    @NotNull
-    @Email
+
+    @Email(message="invalid email information")
     @ApiModelProperty(required = true)
     @JsonProperty("email")
     private String email;
@@ -40,25 +39,32 @@ public class UserDto implements IResponseDto{
     @JsonProperty("family_members_count")
     private BigDecimal familyMembersCount;
 
-    @NotNull
+    @NotNull(message = "device id not available")
+    @NotBlank(message="device id not available")
     @ApiModelProperty(required = true)
     @JsonProperty("device_id")
     private String deviceId;
 
-    @NotNull
+    @NotNull(message="device type not available")
+    @NotBlank(message="device type not available")
     @ApiModelProperty(required = true)
     @JsonProperty("device_type")
     private String deviceType;
 
-    @NotNull
+    @NotNull(message = "OTP value not available")
+    @NotBlank(message="OTP value not available")
     @ApiModelProperty(required = true)
     @JsonProperty("otp")
     private String otp;
 
-    @NotNull
+    @NotNull(message = "register mobile information not available")
     @ApiModelProperty(required = true)
     @JsonProperty("register")
     private RegisterDto register;
+
+    @ApiModelProperty(required = false)
+    @JsonProperty("address")
+    private List<AddressDto> address;
 
     public BigDecimal getId() {
         return id;
@@ -130,5 +136,13 @@ public class UserDto implements IResponseDto{
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public List<AddressDto> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<AddressDto> address) {
+        this.address = address;
     }
 }

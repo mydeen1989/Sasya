@@ -1,5 +1,11 @@
 
- Drop table if exists sasya.register;
+DROP TABLE IF EXISTS SASYA.address;
+Drop table if exists sasya.users;
+Drop table if exists sasya.register;
+Drop table if exists sasya.sub_category;
+Drop table if exists sasya.product;
+Drop table if exists sasya.category;
+-- -------------------------------------------------
 
 CREATE TABLE `register` (
   `register_id` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -9,11 +15,8 @@ CREATE TABLE `register` (
   `created_date` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`register_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- -----------------------------------------------------------------------------
 
-
--- -------------------------------------------------------------------------------
-
-Drop table if exists sasya.users;
 
 CREATE TABLE `users` (
   `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -36,10 +39,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
- -- -------------------------------------------------------------------------------
-
-
-DROP TABLE IF EXISTS SASYA.address;
+-- -------------------------------------------------------------------------------
 
 CREATE TABLE `address` (
   `address_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -59,11 +59,10 @@ CREATE TABLE `address` (
   `active` char(1) DEFAULT '1',
   PRIMARY KEY (`address_id`),
   KEY `address_fk` (`user_id`),
-  CONSTRAINT `address_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `address_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
------------------------------------------------------------------------------------------------------
-Drop table if exists sasya.category;
+-- ---------------------------------------------------------------------------------------------------
 
 CREATE TABLE `category` (
   `category_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -77,8 +76,7 @@ CREATE TABLE `category` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
------------------------------------------------------------------------------------------------------
-Drop table if exists sasya.sub_category;
+-- ---------------------------------------------------------------------------------------------------
 
 CREATE TABLE `sub_category` (
   `sub_category_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -95,8 +93,8 @@ CREATE TABLE `sub_category` (
   CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
------------------------------------------------------------------------------------------------------
-Drop table if exists sasya.product;
+-- ---------------------------------------------------------------------------------------------------
+
 
 CREATE TABLE `product` (
   `product_id` bigint(11) NOT NULL AUTO_INCREMENT,

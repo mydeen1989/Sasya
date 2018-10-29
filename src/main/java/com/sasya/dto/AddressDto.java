@@ -1,14 +1,20 @@
 package com.sasya.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @JsonPropertyOrder({"id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonTypeName("address")
 public class AddressDto implements IResponseDto {
 
     @ApiModelProperty(value = "id of Address")
@@ -16,17 +22,18 @@ public class AddressDto implements IResponseDto {
     private BigDecimal id;
 
     @ApiModelProperty(required = true)
-    @Size(min=1,max=500)
+    @NotBlank(message = "address field should not be empty")
+    @Size(min=1,max=500,message = "address field should be greater than 3 characters")
     @JsonProperty("address")
     private String address;
 
     @ApiModelProperty(required = true)
-    @Size(min=1,max=50)
+    @NotBlank(message="city should not be empty")
     @JsonProperty("city")
     private String city;
 
     @ApiModelProperty(required = true)
-    @Size(min=5,max=50)
+    @NotBlank(message = "state should not be empty")
     @JsonProperty("state")
     private String state;
 
@@ -36,6 +43,7 @@ public class AddressDto implements IResponseDto {
     private String country;
 
     @ApiModelProperty(required = true)
+    @NotBlank(message="PINCODE should not be empty")
     @Size(min=6,max = 6)
     @JsonProperty("pincode")
     private String pincode;
@@ -45,6 +53,7 @@ public class AddressDto implements IResponseDto {
 
     @ApiModelProperty(required = true,allowableValues = "HOME/OFFICE")
     @Pattern(regexp = "HOME|OFFICE",flags = Pattern.Flag.CASE_INSENSITIVE)
+    @NotBlank(message="address type should not be empty")
     @JsonProperty("address_type")
     private String addressType;
 

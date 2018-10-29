@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -98,15 +99,13 @@ public class CommonServiceImpl {
      * @param popularity
      * @return
      */
-    public ResponseEntity getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity) {
+    public ResponseEntity getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity,String filter,List<BigDecimal> productIds) {
         try {
-            List<Product> products = commonDAO.getAllProducts(categoryId, subCategoryId, popularity);
+            List<Product> products = commonDAO.getAllProducts(categoryId, subCategoryId, popularity,filter,productIds);
             if (CollectionUtils.isEmpty(products)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.PRODUCT_NOT_FOUND));
             }
-
             List<ProductDto> productDtos = new ArrayList<>();
-
             products.forEach(product -> {
                 ProductDto productDto = new ProductDto();
                 Mapper.convertEntityToDTOObject(product, productDto);
@@ -133,7 +132,7 @@ public class CommonServiceImpl {
             }
             ProductDto productDto = new ProductDto();
             Mapper.convertEntityToDTOObject(product, productDto);
-            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.PRODUCT_FOUND, productDto));
+            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.PRODUCT_FOUND, Collections.singletonList(productDto)));
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
