@@ -1,9 +1,6 @@
 package com.sasya.repository;
 
-import com.sasya.model.Category;
-import com.sasya.model.Product;
-import com.sasya.model.SubCategory;
-import com.sasya.model.User;
+import com.sasya.model.*;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -38,5 +35,6 @@ public interface AdminDAO {
 
     public List<User> getAllUsers(String userIds);
 
+    public AWSKeyGen getAWSKeyGen();
 
 }

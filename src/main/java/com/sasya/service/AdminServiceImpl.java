@@ -11,10 +11,7 @@ import com.sasya.dto.ProductDto;
 import com.sasya.dto.SubCategoryDto;
 import com.sasya.dto.UserDto;
 import com.sasya.exception.SasyaException;
-import com.sasya.model.Category;
-import com.sasya.model.Product;
-import com.sasya.model.SubCategory;
-import com.sasya.model.User;
+import com.sasya.model.*;
 import com.sasya.repository.AdminDAO;
 import com.sasya.repository.CommonDAO;
 import com.sasya.response.SasyaResponse;
@@ -42,19 +39,6 @@ public class AdminServiceImpl {
 
     @Inject
     private CommonDAO commonDAO;
-
-
-    @Value("${aws_access_key}")
-    private String accessKey;
-
-    @Value("${aws_secret_key}")
-    private String secretKey;
-
-    @Value("${aws_bucket_name}")
-    private String bucketName;
-
-    @Value("${aws_folder_name}")
-    private String folderName;
 
 
     public ResponseEntity addCategory(MultipartFile file, String categoryName) {
@@ -277,14 +261,16 @@ public class AdminServiceImpl {
 
 
     private String getS3ImageUrl(MultipartFile file) throws IOException {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+
+        AWSKeyGen awsKeyGen = adminDAO.getAWSKeyGen();
+        AWSCredentials credentials = new BasicAWSCredentials(awsKeyGen.getAwsAccessKey(), awsKeyGen.getAwsSecretKey());
         // create a client connection based on credentials
         AmazonS3Client s3client = new AmazonS3Client(credentials);
         // upload file to folder and set it to public
-        String fileName = folderName + SasyaConstants.SUFFIX + file.getOriginalFilename();
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, convertMultiPartToFile(file))
+        String fileName = awsKeyGen.getFolderName() + SasyaConstants.SUFFIX + file.getOriginalFilename();
+        s3client.putObject(new PutObjectRequest(awsKeyGen.getBucketName(), fileName, convertMultiPartToFile(file))
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3client.getResourceUrl(bucketName, fileName);
+        return s3client.getResourceUrl(awsKeyGen.getBucketName(), fileName);
     }
 
     private static File convertMultiPartToFile(MultipartFile file) throws IOException {

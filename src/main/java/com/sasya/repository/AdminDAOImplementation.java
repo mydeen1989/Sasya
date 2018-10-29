@@ -1,9 +1,6 @@
 package com.sasya.repository;
 
-import com.sasya.model.Category;
-import com.sasya.model.Product;
-import com.sasya.model.SubCategory;
-import com.sasya.model.User;
+import com.sasya.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -99,5 +96,15 @@ public class AdminDAOImplementation implements AdminDAO {
             return  entityManager.createQuery(query.toString())
                     .getResultList();
         }
+    }
+
+    public AWSKeyGen getAWSKeyGen(){
+       List<AWSKeyGen> awsKeyGen=  entityManager.createQuery("from AWSKeyGen")
+                .getResultList();
+
+        if(awsKeyGen.isEmpty()){
+            return null;
+        }
+        return awsKeyGen.get(0);
     }
 }
