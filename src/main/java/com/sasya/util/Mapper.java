@@ -11,7 +11,9 @@ import com.sasya.model.User;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Mapper {
 
@@ -49,6 +51,9 @@ public class Mapper {
         userDto.setEmail(user.getEmail());
         userDto.setFamilyMembersCount(user.getFamilyMembersCount());
         userDto.setUserName(user.getUserName());
+        List<AddressDto> addressList = SasyaUtils.getEmptyStreamOnNull(user.getAddress())
+                .map(Mapper::convertAddressEntityToDto).collect(Collectors.toList());
+        userDto.setAddress(addressList);
         return userDto;
     }
 
@@ -117,5 +122,19 @@ public class Mapper {
         productDto.setNetprice(SasyaUtils.getNetPrice(product.getPrice(), product.getDiscountPercent(), product.getGstPercent()));
         productDto.setProductNewDate(Objects.nonNull(product.getProductNewDate()) ? product.getProductNewDate() : null);
         productDto.setProductUpdateDate(Objects.nonNull(product.getProductUpdateDate()) ? product.getProductUpdateDate() : null);
+    }
+
+    public static AddressDto convertAddressEntityToDto(Address addressEntity){
+        AddressDto dto = new AddressDto();
+        dto.setId(addressEntity.getId());
+        dto.setAddress(addressEntity.getAddress());
+        dto.setAddressType(addressEntity.getAddressType());
+        dto.setCity(addressEntity.getCity());
+        dto.setCountry(addressEntity.getCountry());
+        dto.setLandmark(addressEntity.getLandmark());
+        dto.setPincode(addressEntity.getPincode().toPlainString());
+        dto.setSecondary_mobile(addressEntity.getSecondaryMobile());
+        dto.setState(addressEntity.getState());
+        return dto;
     }
 }

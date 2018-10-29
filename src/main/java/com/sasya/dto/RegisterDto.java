@@ -19,8 +19,7 @@ import javax.validation.constraints.Size;
 public class RegisterDto implements IResponseDto {
 
     @ApiModelProperty(required = true)
-    @NotNull(message = "mobile number should not be null")
-    @Size(min = 10,max = 10,message = "mobile number should be 10 digits")
+    @Size(min = 10,max = 10,message = "Invalid Mobile Number")
     @JsonProperty("mobile")
     private String mobile ;
 

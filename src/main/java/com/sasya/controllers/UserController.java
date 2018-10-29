@@ -154,34 +154,36 @@ public class UserController {
      * @param popularity
      * @return
      */
-    @ApiOperation(value = "Get All Products", response = SasyaResponse.class)
+    @ApiOperation(value = "Get Products", response = SasyaResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
             @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
     })
-    @RequestMapping(value = "/product/getAllProducts", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProducts", method = RequestMethod.GET)
     public ResponseEntity getAllProducts(@RequestParam(value = "categoryId", required = false) BigDecimal categoryId,
                                          @RequestParam(value = "subCategoryId", required = false) BigDecimal subCategoryId,
-                                         @RequestParam(value = "popularity", required = false) String popularity) {
-        return commonService.getAllProducts(categoryId, subCategoryId, popularity);
+                                         @RequestParam(value = "popularity", required = false) String popularity,
+                                         @RequestParam(value = "id", required = false) List<BigDecimal> ids,
+                                         @RequestParam(value = "filter", required = true) String filter){
+        return commonService.getAllProducts(categoryId, subCategoryId, popularity,filter,ids);
     }
 
-    /**
-     * @param id
-     * @return
-     */
-    @ApiOperation(value = "Get Product", response = SasyaResponse.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
-            @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
-    })
-    @RequestMapping(value = "/product/{id}/getProduct", method = RequestMethod.GET)
-    public ResponseEntity getProduct(@PathVariable("id") BigDecimal id) {
-        return commonService.getProduct(id);
-    }
-
+//    /**
+//     * @param id
+//     * @return
+//     */
+//    @ApiOperation(value = "Get Product", response = SasyaResponse.class)
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
+//            @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
+//            @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
+//    })
+//    @RequestMapping(value = "/product/{id}/getProduct", method = RequestMethod.GET)
+//    public ResponseEntity getProduct(@PathVariable("id") BigDecimal id) {
+//        return commonService.getProduct(id);
+//    }
+//
 
     @ApiOperation(value="get Address",response= SasyaResponse.class)
     @ApiResponses(value={
@@ -189,9 +191,9 @@ public class UserController {
             @ApiResponse(code=500,message="Internal Server Error"),
             @ApiResponse(code= 404,message="Address not found")
     })
-    @RequestMapping(value = "/{user_id}/getAddress", method = RequestMethod.GET)
+    @RequestMapping(value = "/{user_id}/getAddress", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON)
     public ResponseEntity getAddress(@PathVariable("user_id") BigDecimal userId,  @RequestParam(value = "id",required = false) List<BigDecimal> addressIds,
-                                     @RequestParam(value = "type",required = true) String type){
+                                     @RequestParam(value = "filter",required = true) String type){
         return userService.getAddress(userId, addressIds, type);
 
     }

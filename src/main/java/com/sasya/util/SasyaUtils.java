@@ -8,7 +8,9 @@ import com.sasya.model.Register;
 import com.sasya.model.User;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public class SasyaUtils {
 
@@ -24,17 +26,9 @@ public class SasyaUtils {
         return price-discountPrice+gstPrice;
     }
 
-    public static AddressDto convertAddressEntityToDto(Address addressEntity){
-        AddressDto dto = new AddressDto();
-        dto.setAddress(addressEntity.getAddress());
-        dto.setAddressType(addressEntity.getAddressType());
-        dto.setCity(addressEntity.getCity());
-        dto.setCountry(addressEntity.getCountry());
-        dto.setLandmark(addressEntity.getLandmark());
-        dto.setPincode(addressEntity.getPincode().toPlainString());
-        dto.setSecondary_mobile(addressEntity.getSecondaryMobile());
-        dto.setState(addressEntity.getState());
-        return dto;
+    public static <T> Stream<T> getEmptyStreamOnNull(Collection<T> collection){
+        return collection!=null ? collection.stream() : Stream.empty();
     }
+
 
 }

@@ -4,6 +4,7 @@ import com.sasya.model.Category;
 import com.sasya.model.Product;
 import com.sasya.model.SubCategory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,20 +56,36 @@ public class CommonDAOImplementation implements CommonDAO {
      * @return
      */
     @Override
-    public List<Product> getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity) {
+    public List<Product> getAllProducts(BigDecimal categoryId, BigDecimal subCategoryId, String popularity,String filter,List<BigDecimal> productIds) {
 
         List<Product> products = new ArrayList<>();
-        products = filterByCategory(categoryId, subCategoryId, popularity, products);
-        products = filterByCategoryAndSubCategory(categoryId, subCategoryId, popularity, products);
-        products = filterByCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
-        products = filterByCategoryAndSubCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
-        products = filterBySubCategory(categoryId, subCategoryId, popularity, products);
-        products = filterBySubCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
-        products = filterByPopularity(categoryId, subCategoryId, popularity, products);
-        products = getAllProducts(categoryId, subCategoryId, popularity, products);
-        if (products.isEmpty()) {
-            return null;
+//        products = filterByCategory(categoryId, subCategoryId, popularity, products);
+//        products = filterByCategoryAndSubCategory(categoryId, subCategoryId, popularity, products);
+//        products = filterByCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
+//        products = filterByCategoryAndSubCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
+//        products = filterBySubCategory(categoryId, subCategoryId, popularity, products);
+//        products = filterBySubCategoryAndPopularity(categoryId, subCategoryId, popularity, products);
+//        products = filterByPopularity(categoryId, subCategoryId, popularity, products);
+//        products = getAllProducts(categoryId, subCategoryId, popularity, products);
+        if(filter.equalsIgnoreCase("ALL")){
+            return entityManager.createQuery("from Product p").getResultList();
         }
+        StringBuilder query = new StringBuilder("from Product p Where ");
+        if(categoryId!=null && !categoryId.equals(BigDecimal.ZERO)) {
+            query.append( " p.category.id="+categoryId+" and ");
+        }
+        if(subCategoryId!=null && !subCategoryId.equals(BigDecimal.ZERO)){
+            query.append(" p.subCategory.id="+subCategoryId+" and ");
+        }
+        if(!StringUtils.isEmpty(popularity)) {
+            query.append(" p.popularity="+popularity+" and ");
+        }
+        if(productIds!=null && productIds.size()>0) {
+            query.append(" p.id in ("+productIds+")");
+        }
+        query = new StringBuilder(query.substring(0, query.lastIndexOf("and")));
+        products = entityManager.createQuery(query.toString())
+                .getResultList();
         return products;
     }
 
