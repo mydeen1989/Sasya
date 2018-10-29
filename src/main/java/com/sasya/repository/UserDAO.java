@@ -66,11 +66,10 @@ public interface UserDAO {
     public User loadUser(BigDecimal mobile);
 
     /**
-     * @param userId
-     * @param addressId
+     * @param address
      * @return
      */
-    public boolean deleteAddress(BigDecimal userId, BigDecimal addressId);
+    public void deleteAddress(Address address);
 
 
     /**
@@ -80,7 +79,7 @@ public interface UserDAO {
      */
     public Address findAddressById(BigDecimal userId, BigDecimal addressId);
 
-    public List<Address> getAddress(BigDecimal userId, List<BigDecimal> addressIds,String type);
+    public List<Address> getAddress(BigDecimal userId, String addressId);
 
     public <T> void mergeObject(T object);
 

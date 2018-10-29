@@ -3,10 +3,12 @@ package com.sasya.repository;
 import com.sasya.model.Category;
 import com.sasya.model.Product;
 import com.sasya.model.SubCategory;
+import com.sasya.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * AdminDAO
@@ -18,21 +20,23 @@ public interface AdminDAO {
     /**
      * @param category
      */
-    public void saveCategory(Category category);
+    public Category saveCategory(Category category);
 
-    public void saveSubCategory(SubCategory category);
+    public SubCategory saveSubCategory(SubCategory category);
 
-    public boolean deleteCategory(BigDecimal id);
+    public void deleteCategory(Category category);
 
-    public boolean deleteSubCategory(BigDecimal id);
+    public void deleteSubCategory(SubCategory subCategory);
 
-    public void saveProduct(Product product);
+    public Product saveProduct(Product product);
 
     public <T> void mergeObject(T object);
 
     public boolean addProductImage(String url, BigDecimal id);
 
-    public boolean deleteProduct(BigDecimal id);
+    public void deleteProduct(Product product);
+
+    public List<User> getAllUsers(String userIds);
 
 
 }

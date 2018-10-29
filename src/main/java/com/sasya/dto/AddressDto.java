@@ -12,14 +12,14 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-@JsonPropertyOrder({"id","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
+@JsonPropertyOrder({"addressId","address","city","state","country","pincode","landmark","address_type","secondary_mobile"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeName("address")
 public class AddressDto implements IResponseDto {
 
     @ApiModelProperty(value = "id of Address")
-    @JsonProperty("id")
-    private BigDecimal id;
+    @JsonProperty("addressId")
+    private BigDecimal addressId;
 
     @ApiModelProperty(required = true)
     @NotBlank(message = "address field should not be empty")
@@ -61,12 +61,12 @@ public class AddressDto implements IResponseDto {
     private String secondary_mobile;
 
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getAddressId() {
+        return addressId;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public void setAddressId(BigDecimal addressId) {
+        this.addressId = addressId;
     }
 
     public String getAddress() {

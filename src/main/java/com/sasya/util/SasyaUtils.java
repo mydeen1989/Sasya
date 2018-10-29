@@ -1,15 +1,6 @@
 package com.sasya.util;
 
-import com.sasya.constant.SasyaConstants;
-import com.sasya.dto.AddressDto;
-import com.sasya.dto.UserDto;
-import com.sasya.model.Address;
-import com.sasya.model.Register;
-import com.sasya.model.User;
-
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Stream;
 
 public class SasyaUtils {

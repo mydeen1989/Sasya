@@ -1,13 +1,8 @@
 package com.sasya.util;
 
 import com.sasya.constant.SasyaConstants;
-import com.sasya.dto.AddressDto;
-import com.sasya.dto.ProductDto;
-import com.sasya.dto.UserDto;
-import com.sasya.model.Address;
-import com.sasya.model.Product;
-import com.sasya.model.Register;
-import com.sasya.model.User;
+import com.sasya.dto.*;
+import com.sasya.model.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,7 +40,7 @@ public class Mapper {
      */
     public static UserDto convertUserModelToUserDto(User user) {
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
+        userDto.setUserId(user.getId());
         userDto.setDeviceId(user.getDeviceId());
         userDto.setDeviceType(user.getDeviceType());
         userDto.setEmail(user.getEmail());
@@ -79,7 +74,8 @@ public class Mapper {
     }
 
 
-    public static void convertDTOObjectToEntity(ProductDto productDto, Product product) {
+    public static Product convertDTOObjectToEntity(ProductDto productDto) {
+        Product product = new Product();
         product.setCategoryId(Objects.nonNull(productDto.getCategoryId()) ? productDto.getCategoryId() : null);
         product.setSubCategoryId(Objects.nonNull(productDto.getSubCategoryId()) ? productDto.getSubCategoryId() : null);
         product.setProductName(Objects.nonNull(productDto.getProductName()) ? productDto.getProductName() : null);
@@ -96,9 +92,11 @@ public class Mapper {
         product.setProductUpdateDate(Objects.nonNull(productDto.getProductUpdateDate()) ? productDto.getProductUpdateDate() : null);
         product.setCreatedBy(SasyaConstants.SYSTEM_USER);
         product.setCreatedDate(SasyaConstants.formatter.format(new Date()));
+        return product;
     }
 
-    public static void convertEntityToDTOObject(Product product, ProductDto productDto) {
+    public static ProductDto convertEntityToDTOObject(Product product) {
+        ProductDto productDto = new ProductDto();
         productDto.setProductId(product.getId());
         productDto.setCategoryId(Objects.nonNull(product.getCategoryId()) ? product.getCategoryId() : null);
         if (product.getCategory() != null) {
@@ -122,11 +120,12 @@ public class Mapper {
         productDto.setNetprice(SasyaUtils.getNetPrice(product.getPrice(), product.getDiscountPercent(), product.getGstPercent()));
         productDto.setProductNewDate(Objects.nonNull(product.getProductNewDate()) ? product.getProductNewDate() : null);
         productDto.setProductUpdateDate(Objects.nonNull(product.getProductUpdateDate()) ? product.getProductUpdateDate() : null);
+        return productDto;
     }
 
     public static AddressDto convertAddressEntityToDto(Address addressEntity){
         AddressDto dto = new AddressDto();
-        dto.setId(addressEntity.getId());
+        dto.setAddressId(addressEntity.getId());
         dto.setAddress(addressEntity.getAddress());
         dto.setAddressType(addressEntity.getAddressType());
         dto.setCity(addressEntity.getCity());
@@ -136,5 +135,27 @@ public class Mapper {
         dto.setSecondary_mobile(addressEntity.getSecondaryMobile());
         dto.setState(addressEntity.getState());
         return dto;
+    }
+
+    public static CategoryDto convertCategoryEntityToDTO(Category category) {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(category.getId());
+        categoryDto.setActive(category.getActive());
+        categoryDto.setImage_url(category.getImage());
+        categoryDto.setName(category.getName());
+        return categoryDto;
+    }
+
+    public static SubCategoryDto convertSubCategoryEntitytoDTO(SubCategory subCategory) {
+        SubCategoryDto subCategoryDto = new SubCategoryDto();
+        subCategoryDto.setId(Objects.nonNull(subCategory.getId()) ? subCategory.getId() : null);
+        subCategoryDto.setSubCategoryName(Objects.nonNull(subCategory.getName()) ? subCategory.getName() : null);
+        if (Objects.nonNull(subCategory.getCategory())) {
+            subCategoryDto.setCategoryId(Objects.nonNull(subCategory.getCategory().getId()) ? subCategory.getCategory().getId() : null);
+            subCategoryDto.setCategoryName(Objects.nonNull(subCategory.getCategory().getName()) ? subCategory.getCategory().getName() : null);
+        }
+        subCategoryDto.setImage_url(Objects.nonNull(subCategory.getImage()) ? subCategory.getImage() : null);
+        subCategoryDto.setActive(Objects.nonNull(subCategory.getActive()) ? subCategory.getActive() : null);
+        return subCategoryDto;
     }
 }

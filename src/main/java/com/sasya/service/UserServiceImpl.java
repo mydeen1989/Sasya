@@ -2,7 +2,6 @@ package com.sasya.service;
 
 import com.sasya.constant.SasyaConstants;
 import com.sasya.dto.AddressDto;
-import com.sasya.dto.IResponseDto;
 import com.sasya.dto.LoginDto;
 import com.sasya.dto.UserDto;
 import com.sasya.exception.SasyaException;
@@ -11,8 +10,9 @@ import com.sasya.model.Register;
 import com.sasya.model.User;
 import com.sasya.repository.UserDAO;
 import com.sasya.response.SasyaResponse;
-import com.sasya.util.SasyaUtils;
 import com.sasya.util.Mapper;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -136,7 +136,12 @@ public class UserServiceImpl {
      */
     public ResponseEntity deleteAddress(BigDecimal userId, BigDecimal addressId) {
         try {
-            if (userDao.deleteAddress(userId, addressId)) {
+            Address address = userDao.findAddressById(userId, addressId);
+            if (address == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.ADDRESS_NOT_FOUND));
+            }
+            if (Objects.nonNull(address)) {
+                userDao.deleteAddress(address);
                 return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.ADDRESS_DELETE_SUCCESS));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.ADDRESS_NOT_FOUND));
@@ -175,11 +180,21 @@ public class UserServiceImpl {
      * @param
      * @return
      */
-    public ResponseEntity getAddress(BigDecimal userId, List<BigDecimal> addressIds, String type) {
+    public ResponseEntity getAddress(BigDecimal userId, List<BigDecimal> addressIds) {
         try {
-            List<AddressDto> addressList = userDao.getAddress(userId, addressIds, type).
+            String addressId = null;
+            if(CollectionUtils.isNotEmpty(addressIds)) { StringBuilder builder = new StringBuilder(StringUtils.EMPTY);
+                addressIds.forEach(id -> {
+                    builder.append(id).append(",");
+                });
+                addressId =  builder.deleteCharAt(builder.lastIndexOf(",")).toString();
+            }
+            List<AddressDto> addressList = userDao.getAddress(userId, addressId).
                     stream().map(Mapper::convertAddressEntityToDto).collect(Collectors.toList());
-            return ResponseEntity.ok().body(SasyaResponse.build(SasyaConstants.SUCCESS,"",addressList));
+            if (CollectionUtils.isEmpty(addressList)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.ADDRESS_NOT_FOUND));
+            }
+            return ResponseEntity.ok().body(addressList);
         } catch (SasyaException sasyaExp){
             throw sasyaExp;
         }

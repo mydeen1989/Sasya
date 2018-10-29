@@ -5,21 +5,14 @@ import com.sasya.exception.SasyaException;
 import com.sasya.model.Address;
 import com.sasya.model.Register;
 import com.sasya.model.User;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -131,20 +124,13 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     @Override
-    public boolean deleteAddress(BigDecimal userId, BigDecimal addressId) {
-        Query updateQuery = entityManager.createNativeQuery("update Address a set a.active=?1 where a.user_id=?2 and a.id=?3 and a.active='1'");
-        updateQuery.setParameter(1,'0');
-        updateQuery.setParameter(2, userId);
-        updateQuery.setParameter(3, addressId);
-        int result = updateQuery.executeUpdate();
-        if(result>0)
-            return true;
-        return false;
+    public void deleteAddress(Address address) {
+        entityManager.remove(address);
     }
 
     @Override
     public Address findAddressById(BigDecimal userId, BigDecimal addressId) {
-        List<Address> addressList = entityManager.createQuery("from Address a where a.id=?1 and a.userId=?2")
+        List<Address> addressList = entityManager.createQuery("from Address a where a.id=?1 and a.userId=?2 and a.active='1'")
                 .setParameter(1, addressId)
                 .setParameter(2,userId)
                 .getResultList();
@@ -156,20 +142,17 @@ public class UserDAOImplementation implements UserDAO {
 
 
     @Override
-    public List<Address> getAddress(BigDecimal userId, List<BigDecimal> addressIds,String type){
-        List<Address> addressList = Collections.emptyList();
-        if(type.equalsIgnoreCase("ALL")){
-            addressList = entityManager.createQuery("from Address a where a.userId=?1").
-                    setParameter(1,userId)
+    public List<Address> getAddress(BigDecimal userId, String addressId) {
+        StringBuilder query = new StringBuilder("from Address a where a.userId="+userId+" and a.active='1' and");
+        if (StringUtils.isEmpty(addressId)) {
+            return entityManager.createQuery("from Address a where a.userId="+userId+" and a.active='1'")
+                    .getResultList();
+        } else {
+            query.append(" a.id in (" + addressId + ")");
+            return entityManager.createQuery(query.toString())
                     .getResultList();
         }
-        else {
-            addressList = entityManager.createQuery("from Address a where a.userId=?1 and a.id in (?2)")
-                    .setParameter(1,userId)
-                    .setParameter(2,addressIds)
-                    .getResultList();
-        }
-        return addressList;
+
     }
 
 
