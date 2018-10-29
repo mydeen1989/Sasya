@@ -7,6 +7,18 @@ Drop table if exists sasya.product;
 Drop table if exists sasya.category;
 -- -------------------------------------------------
 
+CREATE TABLE `aws_keys` (
+  `id` varchar(45) NOT NULL,
+  `aws_access_key` varchar(200) DEFAULT NULL,
+  `aws_secret_key` varchar(200) DEFAULT NULL,
+  `aws_bucket_name` varchar(45) DEFAULT NULL,
+  `aws_folder_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
 CREATE TABLE `register` (
   `register_id` bigint(11) NOT NULL AUTO_INCREMENT,
   `phone` bigint(10) NOT NULL,
@@ -120,3 +132,6 @@ CREATE TABLE `product` (
   PRIMARY KEY (`product_id`),
   KEY `group_id_idx` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+----------------------------------------------------------------------------------------------------
