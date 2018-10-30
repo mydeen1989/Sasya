@@ -39,9 +39,9 @@ public class CommonServiceImpl {
     /**
      * @return
      */
-    public ResponseEntity getAllCategory() {
+    public ResponseEntity getAllCategory(List<String> categoryNames) {
         try {
-            List<Category> categories = commonDAO.getAllCategory();
+            List<Category> categories = commonDAO.getAllCategory(categoryNames);
             if (CollectionUtils.isEmpty(categories)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.CATEGORY_NOT_FOUND));
             }
@@ -49,7 +49,8 @@ public class CommonServiceImpl {
             categories.forEach(category -> {
                 categoryDtos.add(Mapper.convertCategoryEntityToDTO(category));
             });
-            return ResponseEntity.status(HttpStatus.OK).body(categoryDtos);
+            //return ResponseEntity.status(HttpStatus.OK).body(categoryDtos);
+            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, "", categoryDtos));
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {

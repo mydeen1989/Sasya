@@ -143,8 +143,8 @@ public class UserController {
             @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
     })
     @RequestMapping(value = "/category/getAllCategory", method = RequestMethod.GET)
-    public ResponseEntity getAllCategories() {
-        return commonService.getAllCategory();
+    public ResponseEntity getAllCategories(@RequestParam(value = "name", required = false) List<String> categoryNames) {
+        return commonService.getAllCategory(categoryNames);
     }
 
 

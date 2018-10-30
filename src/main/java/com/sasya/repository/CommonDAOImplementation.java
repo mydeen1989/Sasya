@@ -8,10 +8,16 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sasya.util.SasyaUtils.getEmptyStreamOnNull;
 
 /**
  * UserDAOImplementation
@@ -27,13 +33,23 @@ public class CommonDAOImplementation implements CommonDAO {
      * @return
      */
     @Override
-    public List<Category> getAllCategory() {
-        List<Category> categories = entityManager.createQuery("select c from Category c where c.active='1'")
+    public List<Category> getAllCategory(List<String> categories) {
+        StringBuilder query = new StringBuilder("select c from Category c where c.active='1'");
+        if(categories!=null && categories.size()>0){
+            StringBuilder conditionOnName = new StringBuilder(" and c.name in ('");
+            categories.forEach(categoryName -> {
+                        conditionOnName.append(categoryName).append("','");
+                    }
+            );
+            conditionOnName.replace(conditionOnName.lastIndexOf(","), conditionOnName.length(), ")");
+            query.append(conditionOnName);
+        }
+        List<Category> categoriesList = entityManager.createQuery(query.toString())
                 .getResultList();
-        if (categories.isEmpty()) {
+        if (categoriesList.isEmpty()) {
             return null;
         }
-        return categories;
+        return categoriesList;
     }
 
     /**

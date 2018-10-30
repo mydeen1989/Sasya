@@ -40,10 +40,17 @@ public class AdminServiceImpl {
     @Inject
     private CommonDAO commonDAO;
 
+    @Inject
+    private CommonServiceImpl commonService;
+
 
     public ResponseEntity addCategory(MultipartFile file, String categoryName) {
 
         try {
+            List<Category> categoriesList = commonDAO.getAllCategory(Collections.singletonList(categoryName));
+            if(categoriesList!=null && categoriesList.size()>0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.CATEGORY_ALREADY_EXIST));
+            }
             String url = getS3ImageUrl(file);
             Category categoryEntity = new Category();
             categoryEntity.setName(categoryName);
@@ -53,8 +60,8 @@ public class AdminServiceImpl {
             categoryEntity.setCreatedDate(SasyaConstants.formatter.format(new Date()));
             categoryEntity = adminDAO.saveCategory(categoryEntity);
             CategoryDto category = Mapper.convertCategoryEntityToDTO(categoryEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.CATEGORY_ADDED_SUCCESSFULLY,
-                    Collections.singletonList(category)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(
+                    SasyaConstants.SUCCESS, SasyaConstants.CATEGORY_ADDED_SUCCESSFULLY,category));
 
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -114,8 +121,8 @@ public class AdminServiceImpl {
             subCategoryEntity.setCreatedDate(SasyaConstants.formatter.format(new Date()));
             subCategoryEntity = adminDAO.saveSubCategory(subCategoryEntity);
             SubCategoryDto subCategory = Mapper.convertSubCategoryEntitytoDTO(subCategoryEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.SUB_CATEGORY_ADDED_SUCCESSFULLY,
-                    Collections.singletonList(subCategory)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS,
+                    SasyaConstants.SUB_CATEGORY_ADDED_SUCCESSFULLY, subCategory));
 
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -167,8 +174,8 @@ public class AdminServiceImpl {
         try {
             Product productEntity = adminDAO.saveProduct(Mapper.convertDTOObjectToEntity(productDto));
             ProductDto product = Mapper.convertEntityToDTOObject(productEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.PRODUCT_ADDED_SUCCESSFULLY,
-                    Collections.singletonList(product)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS,
+                    SasyaConstants.PRODUCT_ADDED_SUCCESSFULLY, product));
 
         } catch (Exception exp) {
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

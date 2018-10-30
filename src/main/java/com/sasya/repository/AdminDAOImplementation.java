@@ -27,7 +27,6 @@ public class AdminDAOImplementation implements AdminDAO {
     @Override
     public Category saveCategory(Category category){
         entityManager.persist(category);
-        entityManager.flush();
         return category;
     }
 
