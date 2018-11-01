@@ -18,6 +18,8 @@ import com.sasya.response.SasyaResponse;
 import com.sasya.util.Mapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,8 @@ public class AdminServiceImpl {
     @Inject
     private CommonServiceImpl commonService;
 
+    Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+
 
     public ResponseEntity addCategory(MultipartFile file, String categoryName) {
 
@@ -64,6 +68,7 @@ public class AdminServiceImpl {
                     SasyaConstants.SUCCESS, SasyaConstants.CATEGORY_ADDED_SUCCESSFULLY,category));
 
         } catch (Exception exp) {
+            logger.error("ADD CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -77,6 +82,7 @@ public class AdminServiceImpl {
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.CATEGORY_NOT_FOUND));
         } catch (Exception exp) {
+            logger.error("DELETE CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,6 +110,7 @@ public class AdminServiceImpl {
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
+            logger.error("UPDATE CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -111,20 +118,29 @@ public class AdminServiceImpl {
     public ResponseEntity addSubCategory(MultipartFile file, String subCategoryName, BigDecimal categoryId) {
 
         try {
-            String url = getS3ImageUrl(file);
+            List<SubCategory> isSubExist = commonDAO.getAllSubCategory(Collections.singletonList(subCategoryName));
+            if (isSubExist != null && isSubExist.size() > 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.SUB_CATEGORY_ALREADY_EXIST));
+            }
+            Category parent =  commonDAO.getCategory(categoryId);
+            if(parent==null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.CATEGORY_NOT_FOUND));
+            }
+//            String url = getS3ImageUrl(file);
             SubCategory subCategoryEntity = new SubCategory();
             subCategoryEntity.setName(subCategoryName);
-            subCategoryEntity.setImage(url);
+//            subCategoryEntity.setImage(url);
             subCategoryEntity.setActive("1");
             subCategoryEntity.setCategoryId(categoryId);
             subCategoryEntity.setCreatedBy(SasyaConstants.SYSTEM_USER);
             subCategoryEntity.setCreatedDate(SasyaConstants.formatter.format(new Date()));
             subCategoryEntity = adminDAO.saveSubCategory(subCategoryEntity);
+            subCategoryEntity.setCategory(parent);
             SubCategoryDto subCategory = Mapper.convertSubCategoryEntitytoDTO(subCategoryEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(SasyaResponse.build(SasyaConstants.SUCCESS,
                     SasyaConstants.SUB_CATEGORY_ADDED_SUCCESSFULLY, subCategory));
-
         } catch (Exception exp) {
+            logger.error("ADD SUB CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -138,6 +154,7 @@ public class AdminServiceImpl {
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.SUB_CATEGORY_NOT_FOUND));
         } catch (Exception exp) {
+            logger.error("DELETE SUB CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -165,6 +182,7 @@ public class AdminServiceImpl {
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
+            logger.error("UPDATE SUB CATEGORY FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -178,6 +196,7 @@ public class AdminServiceImpl {
                     SasyaConstants.PRODUCT_ADDED_SUCCESSFULLY, product));
 
         } catch (Exception exp) {
+            logger.error("ADD PRODUCT FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -192,6 +211,7 @@ public class AdminServiceImpl {
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.PRODUCT_NOT_FOUND));
         } catch (Exception exp) {
+            logger.error("DELETE PRODUCT FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -215,6 +235,7 @@ public class AdminServiceImpl {
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
+            logger.error("UPDATE PRODUCT FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -230,6 +251,7 @@ public class AdminServiceImpl {
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.PRODUCT_NOT_FOUND));
         } catch (Exception exp) {
+            logger.error("ADD PRODUCT IMAGE FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -262,6 +284,7 @@ public class AdminServiceImpl {
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
+            logger.error("GET ALL USERS FAILED",exp);
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

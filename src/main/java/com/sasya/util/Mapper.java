@@ -148,14 +148,12 @@ public class Mapper {
 
     public static SubCategoryDto convertSubCategoryEntitytoDTO(SubCategory subCategory) {
         SubCategoryDto subCategoryDto = new SubCategoryDto();
-        subCategoryDto.setId(Objects.nonNull(subCategory.getId()) ? subCategory.getId() : null);
-        subCategoryDto.setSubCategoryName(Objects.nonNull(subCategory.getName()) ? subCategory.getName() : null);
-        if (Objects.nonNull(subCategory.getCategory())) {
-            subCategoryDto.setCategoryId(Objects.nonNull(subCategory.getCategory().getId()) ? subCategory.getCategory().getId() : null);
-            subCategoryDto.setCategoryName(Objects.nonNull(subCategory.getCategory().getName()) ? subCategory.getCategory().getName() : null);
-        }
-        subCategoryDto.setImage_url(Objects.nonNull(subCategory.getImage()) ? subCategory.getImage() : null);
-        subCategoryDto.setActive(Objects.nonNull(subCategory.getActive()) ? subCategory.getActive() : null);
+        subCategoryDto.setId(subCategory.getId());
+        subCategoryDto.setSubCategoryName(subCategory.getName());
+        subCategoryDto.setImage_url(subCategory.getImage());
+        subCategoryDto.setActive(subCategory.getActive());
+        CategoryDto parentCategory = convertCategoryEntityToDTO(subCategory.getCategory());
+        subCategoryDto.setParentCategory(parentCategory);
         return subCategoryDto;
     }
 }

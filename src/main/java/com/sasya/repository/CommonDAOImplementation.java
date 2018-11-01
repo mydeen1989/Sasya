@@ -4,6 +4,10 @@ import com.sasya.model.Category;
 import com.sasya.model.Product;
 import com.sasya.model.SubCategory;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -15,6 +19,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.sasya.util.SasyaUtils.getEmptyStreamOnNull;
@@ -34,19 +39,30 @@ public class CommonDAOImplementation implements CommonDAO {
      */
     @Override
     public List<Category> getAllCategory(List<String> categories) {
-        StringBuilder query = new StringBuilder("select c from Category c where c.active='1'");
+//        StringBuilder query = new StringBuilder("select c from Category c where c.active='1'");
+//        if(categories!=null && categories.size()>0){
+//            StringBuilder conditionOnName = new StringBuilder(" and c.name in ('");
+//            categories.forEach(categoryName -> {
+//                        conditionOnName.append(categoryName).append("','");
+//                    }
+//            );
+//            conditionOnName.replace(conditionOnName.lastIndexOf(","), conditionOnName.length(), ")");
+//            query.append(conditionOnName);
+//        }
+//        List<Category> categoriesList = entityManager.createQuery(query.toString())
+//                .getResultList();
+//        if (categoriesList.isEmpty()) {
+//            return null;
+//        }
+//        return categoriesList;
+
+        Criteria criteria= entityManager.unwrap(Session.class).createCriteria(Category.class);
         if(categories!=null && categories.size()>0){
-            StringBuilder conditionOnName = new StringBuilder(" and c.name in ('");
-            categories.forEach(categoryName -> {
-                        conditionOnName.append(categoryName).append("','");
-                    }
-            );
-            conditionOnName.replace(conditionOnName.lastIndexOf(","), conditionOnName.length(), ")");
-            query.append(conditionOnName);
+            Criterion categoryNameSelect = Restrictions.in("name", categories);
+            criteria.add(categoryNameSelect);
         }
-        List<Category> categoriesList = entityManager.createQuery(query.toString())
-                .getResultList();
-        if (categoriesList.isEmpty()) {
+        List<Category> categoriesList = criteria.list();
+        if(categoriesList.isEmpty()) {
             return null;
         }
         return categoriesList;
@@ -56,13 +72,23 @@ public class CommonDAOImplementation implements CommonDAO {
      * @return
      */
     @Override
-    public List<SubCategory> getAllSubCategory() {
-        List<SubCategory> subCategories = entityManager.createQuery("select s from SubCategory s where s.active='1'")
-                .getResultList();
-        if (subCategories.isEmpty()) {
+    public List<SubCategory> getAllSubCategory(List<String> subCategoryNames) {
+//        List<SubCategory> subCategories = entityManager.createQuery("select s from SubCategory s where s.active='1'")
+//                .getResultList();
+//        if (subCategories.isEmpty()) {
+//            return null;
+//        }
+//        return subCategories;
+        Criteria criteria= entityManager.unwrap(Session.class).createCriteria(SubCategory.class);
+        if(subCategoryNames!=null && subCategoryNames.size()>0){
+            Criterion subCategory = Restrictions.in("name", subCategoryNames);
+            criteria.add(subCategory);
+        }
+        List<SubCategory> categoriesList = criteria.list();
+        if(categoriesList.isEmpty()) {
             return null;
         }
-        return subCategories;
+        return categoriesList;
     }
 
     /**

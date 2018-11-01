@@ -1,13 +1,17 @@
 package com.sasya.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @JsonPropertyOrder({"id","name","image_url","active"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonTypeName("Subcategory")
 public class SubCategoryDto implements IResponseDto {
 
     @ApiModelProperty(value = "id of Sub Category",required = true)
@@ -33,6 +37,10 @@ public class SubCategoryDto implements IResponseDto {
     @ApiModelProperty(required = false)
     @JsonProperty("active")
     private String active;
+
+    @ApiModelProperty(required = false,value = "parent category information")
+    @JsonProperty("category")
+    private CategoryDto parentCategory;
 
     public BigDecimal getId() {
         return id;
@@ -80,5 +88,13 @@ public class SubCategoryDto implements IResponseDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public CategoryDto getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(CategoryDto parentCategory) {
+        this.parentCategory = parentCategory;
     }
 }

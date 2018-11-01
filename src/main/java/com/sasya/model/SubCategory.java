@@ -40,8 +40,8 @@ public class SubCategory {
     @Column(name = "updated_date")
     private String updatedDate;
 
-    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name="category_id",insertable = false,updatable = false)
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="category_id",referencedColumnName = "category_id",insertable = false,updatable = false)
     private Category category;
 
 

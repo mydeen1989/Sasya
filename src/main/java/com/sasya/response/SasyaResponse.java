@@ -86,11 +86,12 @@ public class SasyaResponse {
         return response;
     }
 
-    public static ObjectNode build(String status, String message, Collection<? extends IResponseDto> resultArray){
+    public static ObjectNode build(String status, String message, Collection<? extends IResponseDto> resultArray,String name){
         ObjectNode rootNode = new ObjectMapper().createObjectNode();
         rootNode.put("status", status);
         rootNode.put("message", message);
-        ArrayNode fields = rootNode.putArray("body");
+        ObjectNode body = rootNode.with("body");
+        ArrayNode fields = body.putArray(name);
         resultArray.forEach(obj -> {
             fields.addPOJO(obj);
         });

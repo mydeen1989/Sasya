@@ -208,7 +208,7 @@ public class AdminController {
     })
 
     @RequestMapping(value = "/subCategory/addSubCategory", method = RequestMethod.POST)
-    public ResponseEntity addSubCategory(@RequestPart(value = "file") MultipartFile file,
+    public ResponseEntity addSubCategory(@RequestPart(value = "file",required = false) MultipartFile file,
                                          @RequestParam("subCategoryName") String subCategoryName,
                                          @RequestParam("categoryId") BigDecimal categoryId) {
         return adminService.addSubCategory(file, subCategoryName, categoryId);
@@ -259,8 +259,8 @@ public class AdminController {
             @ApiResponse(code = 400, message = SasyaConstants.INVALID_REQUEST)
     })
     @RequestMapping(value = "/subCategory/getAllSubCategory", method = RequestMethod.GET)
-    public ResponseEntity getAllSubCategories() {
-        return commonService.getAllSubCategory();
+    public ResponseEntity getAllSubCategories(@RequestParam(value = "name", required = false) List<String> subCategoryNames) {
+        return commonService.getAllSubCategory(subCategoryNames);
     }
 
 

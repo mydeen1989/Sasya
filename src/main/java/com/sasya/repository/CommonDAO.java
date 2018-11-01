@@ -50,6 +50,6 @@ public interface CommonDAO {
     /**
      * @return
      */
-    public List<SubCategory> getAllSubCategory();
+    public List<SubCategory> getAllSubCategory(List<String> subCategoryNames);
 
 }
