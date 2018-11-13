@@ -19,7 +19,7 @@ public interface CommonDAO {
     /**
      * @return
      */
-    public List<Category> getAllCategory();
+    public List<Category> getAllCategory(List<String> categories);
 
     /**
      * @param categoryId
@@ -50,6 +50,6 @@ public interface CommonDAO {
     /**
      * @return
      */
-    public List<SubCategory> getAllSubCategory();
+    public List<SubCategory> getAllSubCategory(List<String> subCategoryNames);
 
 }

@@ -1,12 +1,16 @@
 package com.sasya.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 
 @JsonPropertyOrder({"id","name","image_url","active"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonTypeName("Category")
 public class CategoryDto implements IResponseDto {
 
     @ApiModelProperty(value = "id of Category",required = true)

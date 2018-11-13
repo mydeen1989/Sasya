@@ -96,7 +96,7 @@ public class UserServiceImpl {
                 User user = userDao.login(new BigDecimal(loginDto.getMobile()));
                 if (user != null) {
                     UserDto userDto = Mapper.convertUserModelToUserDto(user);
-                    return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.USER_FOUND, Collections.singletonList(userDto)));
+                    return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, SasyaConstants.USER_FOUND, userDto));
                 }
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.USER_NOT_FOUND));
             }

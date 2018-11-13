@@ -46,7 +46,7 @@ public class AdminController {
     })
 
     @RequestMapping(value = "/category/addCategory", method = RequestMethod.POST)
-    public ResponseEntity addCategory(@RequestPart(value = "file") MultipartFile file,
+    public ResponseEntity addCategory(@RequestPart(value = "file",required = false) MultipartFile file,
                                       @RequestParam("categoryName") String categoryName) {
         return adminService.addCategory(file, categoryName);
     }
@@ -58,7 +58,7 @@ public class AdminController {
      */
     @ApiOperation(value = "Remove Category", response = SasyaResponse.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SasyaResponse.class),
+            @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
             @ApiResponse(code = 400, message = "Invalid Request")
     })
@@ -89,15 +89,15 @@ public class AdminController {
     /**
      * @return
      */
-    @ApiOperation(value = "Categories", response = SasyaResponse.class)
+    @ApiOperation(value = "Categories",response = SasyaResponse.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
+            @ApiResponse(code = 200, message = SasyaConstants.OK),
             @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 404, message = SasyaConstants.NOT_FOUND)
     })
     @RequestMapping(value = "/category/getAllCategory", method = RequestMethod.GET)
-    public ResponseEntity getAllCategories() {
-        return commonService.getAllCategory();
+    public ResponseEntity getAllCategories(@RequestParam(value = "name", required = false) List<String> categoryNames) {
+        return commonService.getAllCategory(categoryNames);
     }
 
 
@@ -131,7 +131,7 @@ public class AdminController {
     })
 
     @RequestMapping(value = "/product/{id}/uploadFile", method = RequestMethod.POST)
-    public ResponseEntity addCategory(@RequestPart(value = "file") MultipartFile file,
+    public ResponseEntity addProductImage(@RequestPart(value = "file") MultipartFile file,
                                       @PathVariable("id") BigDecimal id) {
         return adminService.addProductImage(file, id);
     }
@@ -188,7 +188,7 @@ public class AdminController {
     })
     @RequestMapping(value = "/product/{product_id}/updateProduct", method = RequestMethod.PUT,
             consumes = {MediaType.APPLICATION_JSON}, produces = {MediaType.APPLICATION_JSON})
-    public ResponseEntity updateAddress(@PathVariable("product_id") BigDecimal productId,
+    public ResponseEntity updateProduct(@PathVariable("product_id") BigDecimal productId,
                                         @Valid @RequestBody ProductDto productDto) {
         return adminService.updateProduct(productId, productDto);
     }
@@ -200,7 +200,7 @@ public class AdminController {
      * @param categoryId
      * @return
      */
-    @ApiOperation(value = "Add Category", response = SasyaResponse.class)
+    @ApiOperation(value = "Add Sub Category", response = SasyaResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = SasyaConstants.CREATED, response = SasyaResponse.class),
             @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
@@ -208,7 +208,7 @@ public class AdminController {
     })
 
     @RequestMapping(value = "/subCategory/addSubCategory", method = RequestMethod.POST)
-    public ResponseEntity addSubCategory(@RequestPart(value = "file") MultipartFile file,
+    public ResponseEntity addSubCategory(@RequestPart(value = "file",required = false) MultipartFile file,
                                          @RequestParam("subCategoryName") String subCategoryName,
                                          @RequestParam("categoryId") BigDecimal categoryId) {
         return adminService.addSubCategory(file, subCategoryName, categoryId);
@@ -219,7 +219,7 @@ public class AdminController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "Remove Category", response = SasyaResponse.class)
+    @ApiOperation(value = "Remove Sub Category", response = SasyaResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
             @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
@@ -252,15 +252,15 @@ public class AdminController {
     /**
      * @return
      */
-    @ApiOperation(value = "Categories", response = SasyaResponse.class)
+    @ApiOperation(value = "Get All Sub Categories", response = SasyaResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SasyaConstants.OK, response = SasyaResponse.class),
             @ApiResponse(code = 500, message = SasyaConstants.INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 400, message = SasyaConstants.INVALID_REQUEST)
     })
     @RequestMapping(value = "/subCategory/getAllSubCategory", method = RequestMethod.GET)
-    public ResponseEntity getAllSubCategories() {
-        return commonService.getAllSubCategory();
+    public ResponseEntity getAllSubCategories(@RequestParam(value = "name", required = false) List<String> subCategoryNames) {
+        return commonService.getAllSubCategory(subCategoryNames);
     }
 
 

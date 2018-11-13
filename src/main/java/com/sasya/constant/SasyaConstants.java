@@ -35,11 +35,14 @@ public class SasyaConstants {
     public static final String CATEGORY_UPDATED_SUCCESSFULLY = "Category updated Successfully";
     public static final String CATEGORY_REMOVED_SUCCESSFULLY = "Category removed Successfully";
     public static final String CATEGORY_NOT_FOUND = "Category Not found";
+    public static final String CATEGORY_ALREADY_EXIST = "Category already exist";
+
 
     public static final String SUB_CATEGORY_ADDED_SUCCESSFULLY = "SubCategory added Successfully";
     public static final String SUB_CATEGORY_UPDATED_SUCCESSFULLY = "SubCategory updated Successfully";
     public static final String SUB_CATEGORY_REMOVED_SUCCESSFULLY = "SubCategory removed Successfully";
     public static final String SUB_CATEGORY_NOT_FOUND = "SubCategory Not found";
+    public static final String SUB_CATEGORY_ALREADY_EXIST = "SubCategory already exist";
 
     public static final String PRODUCT_ADDED_SUCCESSFULLY = "Product added Successfully";
     public static final String PRODUCT_UPDATED_SUCCESSFULLY = "Product updated Successfully";

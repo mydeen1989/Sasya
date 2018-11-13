@@ -27,10 +27,8 @@ public class AdminDAOImplementation implements AdminDAO {
     @Override
     public Category saveCategory(Category category){
         entityManager.persist(category);
-        entityManager.flush();
         return category;
     }
-
 
     /**
      * @param subCategory
@@ -38,7 +36,6 @@ public class AdminDAOImplementation implements AdminDAO {
     @Override
     public SubCategory saveSubCategory(SubCategory subCategory){
         entityManager.persist(subCategory);
-        entityManager.flush();
         return subCategory;
     }
 
@@ -70,7 +67,6 @@ public class AdminDAOImplementation implements AdminDAO {
     @Override
     public Product saveProduct(Product product){
         entityManager.persist(product);
-        entityManager.flush();
         return product;
     }
 

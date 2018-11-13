@@ -2,6 +2,9 @@ package com.sasya.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,6 +39,10 @@ public class Category {
 
     @Column(name = "updated_date")
     private String updatedDate;
+
+    @OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="category_id")
+    private List<SubCategory> childs;
 
 
     public BigDecimal getId() {
@@ -103,5 +110,20 @@ public class Category {
         this.createdDate = createdDate;
     }
 
+    public List<SubCategory> getChilds() {
+        return childs;
+    }
 
+    public void setChilds(List<SubCategory> childs) {
+        this.childs = childs;
+    }
+
+    public void addChildCategory(SubCategory subCategory) {
+        if(this.childs!=null) {
+            childs.add(subCategory);
+        }
+        else {
+            childs = new ArrayList(Collections.singleton(subCategory));
+        }
+    }
 }

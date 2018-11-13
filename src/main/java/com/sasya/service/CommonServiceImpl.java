@@ -39,9 +39,9 @@ public class CommonServiceImpl {
     /**
      * @return
      */
-    public ResponseEntity getAllCategory() {
+    public ResponseEntity getAllCategory(List<String> categoryNames) {
         try {
-            List<Category> categories = commonDAO.getAllCategory();
+            List<Category> categories = commonDAO.getAllCategory(categoryNames);
             if (CollectionUtils.isEmpty(categories)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.CATEGORY_NOT_FOUND));
             }
@@ -49,7 +49,8 @@ public class CommonServiceImpl {
             categories.forEach(category -> {
                 categoryDtos.add(Mapper.convertCategoryEntityToDTO(category));
             });
-            return ResponseEntity.status(HttpStatus.OK).body(categoryDtos);
+            //return ResponseEntity.status(HttpStatus.OK).body(categoryDtos);
+            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS, "", categoryDtos,"Categories"));
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
@@ -61,9 +62,9 @@ public class CommonServiceImpl {
     /**
      * @return
      */
-    public ResponseEntity getAllSubCategory() {
+    public ResponseEntity getAllSubCategory(List<String> subCategoryNames) {
         try {
-            List<SubCategory> subCategories = commonDAO.getAllSubCategory();
+            List<SubCategory> subCategories = commonDAO.getAllSubCategory(subCategoryNames);
             if (CollectionUtils.isEmpty(subCategories)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SasyaResponse.build(SasyaConstants.FAILURE, SasyaConstants.SUB_CATEGORY_NOT_FOUND));
             }
@@ -71,10 +72,11 @@ public class CommonServiceImpl {
             subCategories.forEach(subCategory -> {
                 subCategoryDtos.add(Mapper.convertSubCategoryEntitytoDTO(subCategory));
             });
-            return ResponseEntity.status(HttpStatus.OK).body(subCategoryDtos);
+            return ResponseEntity.status(HttpStatus.OK).body(SasyaResponse.build(SasyaConstants.SUCCESS,"",subCategoryDtos,"subCategories"));
         } catch (SasyaException sasyaExp) {
             throw sasyaExp;
         } catch (Exception exp) {
+
             throw new SasyaException(exp.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
